@@ -1,11 +1,13 @@
 package nodes;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import rectangles.IRectangle;
 import rectangles.MBR;
 import rectangles.MyRectangle;
 import trees.RTree;
+import utils.Pair;
 import utils.RectangleContainer;
 
 /**
@@ -15,22 +17,28 @@ import utils.RectangleContainer;
  */
 public class InternalNode extends AbstractNode{
 	private boolean childIsLeaf = true;
-	private INode[] children;
-
+	//TODO los hijos no son nodos,son direcciones a disco (un número)
+	private LinkedList<Pair> mbrList= new LinkedList<Pair>();
+	
+	
 	public InternalNode(int t, boolean isRoot){
-		NodeTuples = new MBR[2*t];
-		children = new INode[2*t];
 		maxChildNumber = 2*t;
 		this.isRoot = isRoot;
+		this.parentMBR = null;
 	}
 	
-	protected InternalNode(IRectangle[] elements, String nodeName, int keyNumber,
+	public InternalNode(int t, boolean isRoot, MBR mbr){
+		maxChildNumber = 2*t;
+		this.isRoot = isRoot;
+		this.parentMBR = mbr;
+	}
+	/*protected InternalNode(IRectangle[] elements, String nodeName, int keyNumber,
 			boolean childIsLeaf){
 		this.childIsLeaf = childIsLeaf;
 		NodeTuples = elements;
 		fileName = nodeName;
 		this.keyNumber = keyNumber;
-	}
+	}*/
 	
 
 	/**
@@ -42,7 +50,7 @@ public class InternalNode extends AbstractNode{
 	}
 	
 	/**
-	 * Método que permite insertar en el arbol.
+	 * Método que permite insertar en el arbol sin la operacion de reinsertar.
 	 * @param r Rectangulo a insertar
 	 * @param t arbol al que pertenece el nodo. Permite conocer y modificar la raiz
 	 * @return RectangleContainer que tiene dentro un rectangulo y una posicion de 
@@ -60,8 +68,13 @@ public class InternalNode extends AbstractNode{
 			return this.split(r,t);
 			
 		}
-		NodeTuples[keyNumber]=aux.r;
-		//children[keyNumber]=aux.childPos;
+		/* se remueve el mbr anterior */
+		for(Pair p : mbrList)
+			if(p.r.equals(aux.r))
+				mbrList.remove(p);
+		/* se guardar los dos mbr nuevos */
+		mbrList.add(aux.p1);
+		mbrList.add(aux.p2);
 		keyNumber++;
 		return null;
 	}
@@ -89,9 +102,9 @@ public class InternalNode extends AbstractNode{
 	 */
 	private INode obtainInsertNode(MyRectangle r){
 		if(!childIsLeaf){
-			/* Se carga el hijo en un nodo interno*/
-			/* en verdad children va a guardar las posiciones de los hijos en 
-			 * el archivo, por ahora dejemoslo como INode*/
+			/* Se carga el hijo en un nodo interno
+			   en verdad children va a guardar las posiciones de los hijos en 
+			   el archivo, por ahora dejemoslo como INode*/
 			return this.getNodeMinAreaChange(r); 
 		}
 		
@@ -134,15 +147,18 @@ public class InternalNode extends AbstractNode{
 	 */
 	private double getOverlapChange(int i, MyRectangle r) {
 		double overlap = 0;
+		IRectangle me, other;
+		me = mbrList.get(i).r;
 		for(int j =0; j<keyNumber; j++){
 			if(j==i)
 				continue;
-			overlap += NodeTuples[i].intersectionArea(NodeTuples[j]);
+			other = mbrList.get(j).r;
+			overlap += me.intersectionArea(other);
 		}
 		double[] r_x = r.getX();
 		double[] r_y = r.getY();
-		double[] aux_x = NodeTuples[i].getX();
-		double[] aux_y =  NodeTuples[i].getY();
+		double[] aux_x = me.getX();
+		double[] aux_y =  me.getY();
 		
 		if(r_x[0]<aux_x[0])
 			aux_x[0] = r_x[0];
@@ -158,7 +174,8 @@ public class InternalNode extends AbstractNode{
 		for(int j =0; j<keyNumber; j++){
 			if(j==i)
 				continue;
-			new_overlap += aux_rect.intersectionArea(NodeTuples[j]);
+			other = mbrList.get(j).r;
+			new_overlap += aux_rect.intersectionArea(other);
 		}
 		return new_overlap-overlap;
 	}
@@ -170,9 +187,11 @@ public class InternalNode extends AbstractNode{
 	 */
 	private INode getNodeMinAreaChange(MyRectangle r){
 		double minAreaChange = Double.MAX_VALUE;
+		MBR rect;
 		ArrayList<Integer> minMBRIndex = new ArrayList<Integer>();
 		for(int i =0; i< keyNumber; i++){
-			double change = ((MBR)NodeTuples[i]).getAreaChange(r);
+			rect = mbrList.get(i).r;
+			double change = rect.getAreaChange(r);
 			if(change<minAreaChange){
 				minAreaChange=change;
 				minMBRIndex = new ArrayList<Integer>(i);
@@ -187,7 +206,8 @@ public class InternalNode extends AbstractNode{
 		double minArea = Double.MAX_VALUE;
 		int minAreaIndex = -1;
 		for(int i = 0; i<minMBRIndex.size(); i++){
-			double area = NodeTuples[minMBRIndex.get(i)].getArea();
+			rect = mbrList.get(minMBRIndex.get(i)).r;
+			double area = rect.getArea();
 			if(minArea<area){
 				minArea=area;
 				minAreaIndex=i;
@@ -202,8 +222,10 @@ public class InternalNode extends AbstractNode{
 	@Override
 	public boolean buscar(MyRectangle r) {
 		boolean res=false;
+		MBR rect;
 		for(int i = 0; i<keyNumber; i++){
-			if(!((MBR)NodeTuples[i]).contains(r))
+			rect = mbrList.get(i).r;
+			if(!rect.contains(r))
 				continue;
 			if(res)
 				return true;
