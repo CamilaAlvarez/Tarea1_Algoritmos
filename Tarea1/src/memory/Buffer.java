@@ -1,7 +1,5 @@
 package memory;
 
-import java.util.LinkedList;
-
 import nodes.INode;
 
 public class Buffer {

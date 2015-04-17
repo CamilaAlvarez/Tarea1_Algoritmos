@@ -234,5 +234,11 @@ public class InternalNode extends AbstractNode{
 		return res;
 	}
 
+	@Override
+	public byte[] writeBuffer() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 }

@@ -9,7 +9,6 @@ import rectangles.MBR;
 import rectangles.MyRectangle;
 import rectangles.RectangleComparatorX;
 import rectangles.RectangleComparatorY;
-import rectangles.RectangleComparatos;
 import trees.RTree;
 import utils.RectangleContainer;
 

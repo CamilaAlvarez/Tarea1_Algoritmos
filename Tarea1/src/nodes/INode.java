@@ -15,5 +15,7 @@ public interface INode{
 	public RectangleContainer insertNoReinsert(MyRectangle r, RTree rTree);
 	public boolean buscar(MyRectangle r);
 	public boolean isRoot();
+	public byte[] writeBuffer();
+	public long getPosition();
 
 }

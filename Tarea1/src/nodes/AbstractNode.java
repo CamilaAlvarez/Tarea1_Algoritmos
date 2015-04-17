@@ -9,6 +9,7 @@ public abstract class AbstractNode implements INode{
 	protected boolean isRoot;
 	protected int maxChildNumber;
 	protected MBR parentMBR;
+	protected long filePos;
 	
 	/**
 	 * Aumenta la variable de numero de llaves en 1
@@ -33,5 +34,8 @@ public abstract class AbstractNode implements INode{
 		return isRoot;
 	}
 	
+	public long getPosition() {
+		return filePos;
+	}
 
 }

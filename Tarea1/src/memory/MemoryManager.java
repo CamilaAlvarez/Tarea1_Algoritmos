@@ -19,7 +19,7 @@ public class MemoryManager {
 	}
 	
 	
-	public INode loadNode(long pos){
+	public INode loadNode(long pos) throws IOException{
 		INode n = nodeBuffer.findNode(pos);
 		if(n!=null){
 			return n;
