@@ -4,16 +4,17 @@ import rectangles.IRectangle;
 
 /**
  * Clase usada para pasar informacion entre llamadas recursivas
- * @author camo
+ * 
  *
  */
 public class RectangleContainer {
+	public Pair p1, p2;
 	public IRectangle r;
-	public long childPos;
 	
-	public RectangleContainer(IRectangle r, long childPos){
-		this.r=r;
-		this.childPos=childPos;
+	public RectangleContainer(Pair p1, Pair p2, IRectangle r){
+		this.p1=p1;
+		this.p2=p2;
+		this.r = r;
 	}
 
 }

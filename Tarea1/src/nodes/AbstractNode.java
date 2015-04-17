@@ -1,13 +1,14 @@
 package nodes;
 
-import rectangles.IRectangle;
+import rectangles.MBR;
+
 
 public abstract class AbstractNode implements INode{
 	protected int keyNumber;
-	protected IRectangle[] NodeTuples;
 	protected String fileName;
 	protected boolean isRoot;
 	protected int maxChildNumber;
+	protected MBR parentMBR;
 	
 	/**
 	 * Aumenta la variable de numero de llaves en 1
