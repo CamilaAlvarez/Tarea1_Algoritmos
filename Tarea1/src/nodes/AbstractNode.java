@@ -1,6 +1,13 @@
 package nodes;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedList;
+
+import rectangles.IRectangle;
 import rectangles.MBR;
+import trees.RTree;
 
 
 public abstract class AbstractNode implements INode{
@@ -8,7 +15,7 @@ public abstract class AbstractNode implements INode{
 	protected String fileName;
 	protected boolean isRoot;
 	protected int maxChildNumber;
-	protected MBR parentMBR;
+	protected IRectangle parentMBR;
 	protected long filePos;
 	
 	/**
@@ -37,5 +44,56 @@ public abstract class AbstractNode implements INode{
 	public long getPosition() {
 		return filePos;
 	}
+	
+	protected double margen(LinkedList<IRectangle> aux_rects,
+			Comparator<IRectangle> rectangleComparator, int m, int end) {
+		Collections.sort(aux_rects, rectangleComparator);
+		double margen=0;
+		for(int i = 0; i<end; i++){
+			margen += this.calcularMargen(m,i, aux_rects);
+		}
+		return margen;
+	}
+
+	protected double calcularMargen(int m, int i, LinkedList<IRectangle> rects) {
+		double minX, maxX, minY, maxY;
+		minX = minY = Double.MAX_VALUE;
+		maxX = maxY = Double.MIN_VALUE;
+		double margen;
+		for(int j=0; j<m-1+i; j++){
+			IRectangle r = rects.get(j);
+			double[] x = r.getX();
+			double[] y = r.getY();
+			if(x[0]<minX)
+				minX = x[0];
+			if(x[1]>maxX)
+				maxX = x[1];
+			if(y[0]<minY)
+				minY = y[0];
+			if(y[1]>maxY)
+				maxY = y[1];
+		}
+		margen = 2*(maxX-minX)+2*(maxY-minY);
+		
+		minX = minY = Double.MAX_VALUE;
+		maxX = maxY = Double.MIN_VALUE;
+	
+		for(int j=m-1+i; j<2*RTree.t+1; j++){
+			IRectangle r = rects.get(j);
+			double[] x = r.getX();
+			double[] y = r.getY();
+			if(x[0]<minX)
+				minX = x[0];
+			if(x[1]>maxX)
+				maxX = x[1];
+			if(y[0]<minY)
+				minY = y[0];
+			if(y[1]>maxY)
+				maxY = y[1];
+		}
+		margen += 2*(maxX-minX)+2*(maxY-minY);
+		return margen;
+	}
+
 
 }

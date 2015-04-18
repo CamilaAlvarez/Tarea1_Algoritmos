@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy/>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="java.lang.Double"/>
+<fullyQualifiedTypeName name="nodes.Leaf"/>
+<fullyQualifiedTypeName name="trees.RTree"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="rectangles.MyRectangle"/>
+<fullyQualifiedTypeName name="java.util.HashMap"/>
+<fullyQualifiedTypeName name="utils.Pair"/>
+<fullyQualifiedTypeName name="rectangles.IRectangle"/>
+<fullyQualifiedTypeName name="rectangles.PairComparatorX"/>
+<fullyQualifiedTypeName name="rectangles.PairComparatorY"/>
+<fullyQualifiedTypeName name="java.util.LinkedList"/>
+<fullyQualifiedTypeName name="com.sun.xml.internal.fastinfoset.algorithm.IntEncodingAlgorithm"/>
+<fullyQualifiedTypeName name="nodes.InternalNode"/>
+</qualifiedTypeNameHistroy>
