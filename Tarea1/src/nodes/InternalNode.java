@@ -121,8 +121,9 @@ public class InternalNode extends AbstractNode{
 	 * @param t arbol al que pertenece el nodo
 	 * @return RectangleContainer con el rectangulo que debe subir, y
 	 * la posicion del hijo que se debe guardar
+	 * @throws IOException 
 	 */
-	private RectangleContainer split(Pair p1, Pair p2, RTree t) {
+	private RectangleContainer split(Pair p1, Pair p2, RTree t) throws IOException {
 		LinkedList<Pair> aux_list = new LinkedList<Pair>(mbrList);
 		aux_list.add(p1);
 		aux_list.add(p2);
@@ -290,9 +291,6 @@ public class InternalNode extends AbstractNode{
 	 */
 	private INode obtainInsertNode(MyRectangle r) throws IOException{
 		if(!childIsLeaf){
-			/* Se carga el hijo en un nodo interno
-			   en verdad children va a guardar las posiciones de los hijos en 
-			   el archivo, por ahora dejemoslo como INode*/
 			return this.getNodeMinAreaChange(r); 
 		}
 		
@@ -320,6 +318,7 @@ public class InternalNode extends AbstractNode{
 			}
 		}
 		
+		//Si no hay empates
 		if(minMBROverlapIndex.size()==1){
 			Pair p = mbrList.get(minMBROverlapIndex.get(0));
 			INode n = RTree.memManager.loadNode(p.childPos);
@@ -375,8 +374,9 @@ public class InternalNode extends AbstractNode{
 	 * Calcula minimo cambio de area al agregar un rectangulo
 	 * @param r rectangulo a agregar
 	 * @return hijo del MBR que sufre menor cambio de area
+	 * @throws IOException 
 	 */
-	private INode getNodeMinAreaChange(MyRectangle r){
+	private INode getNodeMinAreaChange(MyRectangle r) throws IOException{
 		double minAreaChange = Double.MAX_VALUE;
 		MBR rect;
 		ArrayList<Integer> minMBRIndex = new ArrayList<Integer>();
@@ -391,8 +391,12 @@ public class InternalNode extends AbstractNode{
 				minMBRIndex.add(i);
 			}
 		}
-		if(minMBRIndex.size()==1)
-			return children[minMBRIndex.get(0)];
+		
+		if(minMBRIndex.size()==1){
+			Pair a = mbrList.get(minMBRIndex.get(0));
+			INode n = RTree.memManager.loadNode(a.childPos);
+			return n;
+		}
 		
 		double minArea = Double.MAX_VALUE;
 		int minAreaIndex = -1;
@@ -404,23 +408,28 @@ public class InternalNode extends AbstractNode{
 				minAreaIndex=i;
 			}
 		}
-		return children[minAreaIndex];
+		Pair p = mbrList.get(minAreaIndex);
+		INode n = RTree.memManager.loadNode(p.childPos);
+		return n;
 	}
 
 	/**
 	 * Busca un rectangulo en el nodo
+	 * @throws IOException 
 	 */
 	@Override
-	public boolean buscar(MyRectangle r) {
+	public boolean buscar(MyRectangle r) throws IOException {
 		boolean res=false;
 		MBR rect;
 		for(int i = 0; i<keyNumber; i++){
 			rect = mbrList.get(i).r;
 			if(!rect.contains(r))
 				continue;
+			Pair p = mbrList.get(i);
+			INode n = RTree.memManager.loadNode(p.childPos);
+			res = n.buscar(r);
 			if(res)
 				return true;
-			res = children[i].buscar(r);
 		}
 		return res;
 	}

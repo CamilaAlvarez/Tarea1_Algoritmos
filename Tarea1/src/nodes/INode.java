@@ -15,7 +15,7 @@ public interface INode{
 	
 	public boolean isLeaf();
 	public RectangleContainer insertNoReinsert(MyRectangle r, RTree rTree) throws IOException;
-	public boolean buscar(MyRectangle r);
+	public boolean buscar(MyRectangle r) throws IOException;
 	public boolean isRoot();
 	public byte[] writeBuffer();
 	public long getPosition();

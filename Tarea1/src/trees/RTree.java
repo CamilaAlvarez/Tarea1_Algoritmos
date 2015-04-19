@@ -4,12 +4,14 @@ import java.io.IOException;
 
 import memory.IMemoryManager;
 import memory.PMManager;
+import nodes.INode;
 import nodes.Leaf;
 import rectangles.MyRectangle;
 
-public class RTree extends AbstractRTree {
+public class RTree implements IRTree {
 	public static int t;
-	public static IMemoryManager memManager;
+	public static IMemoryManager memManager;	
+	public INode root;
 	
 	public RTree(int t) throws IOException{
 		// true indica que se es raiz
@@ -28,7 +30,11 @@ public class RTree extends AbstractRTree {
 	public void insertar(MyRectangle r) throws IOException {
 		root.insertNoReinsert(r,this);
 		
-		
+	}
+	
+	@Override
+	public boolean buscar(MyRectangle r) throws IOException {
+		return root.buscar(r);
 		
 	}
 
