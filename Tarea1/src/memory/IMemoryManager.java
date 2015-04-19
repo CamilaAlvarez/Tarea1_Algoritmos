@@ -19,4 +19,10 @@ public interface IMemoryManager {
 	 * @throws IOException
 	 */
 	public void saveNode(INode n) throws IOException;
+	
+	/**
+	 * Entrega la siguiente posición disponible en memoria
+	 * @return
+	 */
+	public long getPosition();
 }

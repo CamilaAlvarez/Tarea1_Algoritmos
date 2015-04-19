@@ -54,7 +54,7 @@ public class SMManager implements IMemoryManager{
 			writeToFile(data, nodeBuffer.getFilePosition(toFree));
 		}
 		//Se agrega el nuevo nodo al buffer 
-		nodeBuffer.addNode(n,toFree,false);
+		nodeBuffer.addNode(n,toFree,true);
 	}
 	
 	private void writeToFile(byte[] archivo , long posicion) throws IOException{
@@ -65,6 +65,13 @@ public class SMManager implements IMemoryManager{
 	private void readFromFile(byte[] archivo , long posicion) throws IOException{
 		file.seek(posicion);
 		file.read(archivo);
+	}
+
+
+	@Override
+	public long getPosition() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 }

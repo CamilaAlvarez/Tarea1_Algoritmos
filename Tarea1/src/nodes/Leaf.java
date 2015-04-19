@@ -77,7 +77,7 @@ public class Leaf extends AbstractNode{
 		if(isRoot){
 			this.isRoot=false;
 			INode newRoot = new InternalNode(RTree.t, true, children);
-			/* se debe guardar la raiz en memoria secundaria */
+			/*TODO se debe guardar la raiz en memoria secundaria */
 			t.root = newRoot;
 			
 			return null;
