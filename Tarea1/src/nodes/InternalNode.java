@@ -37,6 +37,7 @@ public class InternalNode extends AbstractNode{
 		this.isRoot = isRoot;
 		this.parentMBR = null;
 		this.mbrList= new LinkedList<Pair>();
+		this.keyNumber = 0;
 	}
 	
 	public InternalNode(int t, boolean isRoot, MBR mbr){
@@ -44,6 +45,7 @@ public class InternalNode extends AbstractNode{
 		this.isRoot = isRoot;
 		this.parentMBR = mbr;
 		this.mbrList= new LinkedList<Pair>();
+		this.keyNumber = 0;
 	}
 	
 	public InternalNode(int t, boolean isRoot, LinkedList<Pair> pairs){
@@ -51,6 +53,7 @@ public class InternalNode extends AbstractNode{
 		this.isRoot = isRoot;
 		this.parentMBR = null;
 		this.mbrList= new LinkedList<Pair>(pairs);
+		this.keyNumber = mbrList.size();
 	}
 	
 	public InternalNode(int t, boolean isRoot, MBR mbr, LinkedList<Pair> pairs){
@@ -58,6 +61,7 @@ public class InternalNode extends AbstractNode{
 		this.isRoot = isRoot;
 		this.parentMBR = null;
 		this.mbrList= new LinkedList<Pair>(pairs);
+		this.keyNumber = mbrList.size();
 	}
 	
 	/*protected InternalNode(IRectangle[] elements, String nodeName, int keyNumber,
@@ -96,8 +100,10 @@ public class InternalNode extends AbstractNode{
 		
 		/* se remueve el mbr anterior */
 		for(Pair p : mbrList)
-			if(p.r.equals(aux.r))
+			if(p.r.equals(aux.r)){
 				mbrList.remove(p);
+				break;
+			}
 		
 		/* se deberia borrar el hijo correpondiente a aux.r del archivo */
 		keyNumber--;
@@ -137,8 +143,8 @@ public class InternalNode extends AbstractNode{
 		for(Pair p : aux_list)
 			aux_rects.add(p.r);
 		
-		int m = 4*(2*RTree.t+1)/100;
-		int end = (192*RTree.t +196)/100;
+		int m = 4*(2*RTree.t+1)/10;
+		int end = 6*(2*RTree.t +1)/10;
 		
 		double margenX_0 = this.margen(aux_rects, new RectangleComparatorX(0),m, end);
 		double margenY_0 = this.margen(aux_rects, new RectangleComparatorY(0),m, end);
@@ -403,7 +409,7 @@ public class InternalNode extends AbstractNode{
 		for(int i = 0; i<minMBRIndex.size(); i++){
 			rect = mbrList.get(minMBRIndex.get(i)).r;
 			double area = rect.getArea();
-			if(minArea<area){
+			if(minArea>area){
 				minArea=area;
 				minAreaIndex=i;
 			}

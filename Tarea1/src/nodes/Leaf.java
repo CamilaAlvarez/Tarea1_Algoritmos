@@ -28,6 +28,7 @@ public class Leaf extends AbstractNode{
 		this.isRoot = isRoot;
 		this.parentMBR = null;
 		this.rects= new LinkedList<IRectangle>();
+		this.keyNumber = 0;
 	}
 	
 	public Leaf(int t, boolean isRoot, MBR mbr){
@@ -35,6 +36,7 @@ public class Leaf extends AbstractNode{
 		this.isRoot = isRoot;
 		this.parentMBR = mbr;
 		this.rects= new LinkedList<IRectangle>();
+		this.keyNumber = 0;
 	}
 	
 	public Leaf(int t, boolean isRoot, MBR mbr, LinkedList<IRectangle> rects){
@@ -42,6 +44,7 @@ public class Leaf extends AbstractNode{
 		this.rects= new LinkedList<IRectangle>(rects);
 		this.isRoot = isRoot;
 		this.parentMBR = mbr;
+		this.keyNumber = rects.size();
 	}
 	
 	@Override
@@ -60,7 +63,7 @@ public class Leaf extends AbstractNode{
 		}
 		else{
 			rects.add(keyNumber, r);
-			keyNumber++;
+			this.addKey();
 		}
 		return null;
 		
@@ -83,8 +86,8 @@ public class Leaf extends AbstractNode{
 	private LinkedList<Pair> generateSplit(IRectangle r) throws IOException{
 		LinkedList<IRectangle> aux_rects = new LinkedList<IRectangle>(rects);
 		aux_rects.add(r);
-		int m = 4*(2*RTree.t+1)/100;
-		int end = (192*RTree.t +196)/100;
+		int m = 4*(2*RTree.t+1)/10;
+		int end = 6*(2*RTree.t +1)/10;
 		
 		double margenX_0 = this.margen(aux_rects, new RectangleComparatorX(0),m, end);
 		double margenY_0 = this.margen(aux_rects, new RectangleComparatorY(0),m, end);
@@ -142,7 +145,7 @@ public class Leaf extends AbstractNode{
 			minX = minY = Double.MAX_VALUE;
 			maxX = maxY = Double.MIN_VALUE;
 		
-			for(int j=m-1+i; j<2*RTree.t+1; j++){
+			for(int j=m-1+i; j<2*RTree.t; j++){
 				IRectangle r = rects.get(j);
 				double[] x = r.getX();
 				double[] y = r.getY();

@@ -83,7 +83,7 @@ public abstract class AbstractNode implements INode{
 		minX = minY = Double.MAX_VALUE;
 		maxX = maxY = Double.MIN_VALUE;
 	
-		for(int j=m-1+i; j<2*RTree.t+1; j++){
+		for(int j=m-1+i; j<2*RTree.t; j++){
 			IRectangle r = rects.get(j);
 			double[] x = r.getX();
 			double[] y = r.getY();
