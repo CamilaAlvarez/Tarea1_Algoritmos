@@ -108,7 +108,7 @@ public class InternalNode extends AbstractNode{
 		/* se deberia borrar el hijo correpondiente a aux.r del archivo */
 		keyNumber--;
 		
-		if(keyNumber+2>=maxChildNumber){
+		if(keyNumber+2>maxChildNumber){
 			return this.split(aux.p1, aux.p2,t);
 			
 		}
@@ -181,7 +181,7 @@ public class InternalNode extends AbstractNode{
 			
 			/* iterar para la primera parte de la distribucion */
 			for(int j=0; j<m-1+i; j++){
-				IRectangle r = mbrList.get(j).r;
+				IRectangle r = aux_list.get(j).r;
 				double[] x = r.getX();
 				double[] y = r.getY();
 				if(x[0]<minX)
@@ -202,8 +202,8 @@ public class InternalNode extends AbstractNode{
 			minX = minY = Double.MAX_VALUE;
 			maxX = maxY = Double.MIN_VALUE;
 		
-			for(int j=m-1+i; j<2*RTree.t+1; j++){
-				IRectangle r = mbrList.get(j).r;
+			for(int j=m-1+i; j<2*RTree.t; j++){
+				IRectangle r = aux_list.get(j).r;
 				double[] x = r.getX();
 				double[] y = r.getY();
 				if(x[0]<minX)

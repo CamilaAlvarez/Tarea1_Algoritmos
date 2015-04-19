@@ -124,7 +124,7 @@ public class Leaf extends AbstractNode{
 			
 			/* iterar para la primera parte de la distribucion */
 			for(int j=0; j<m-1+i; j++){
-				IRectangle r = rects.get(j);
+				IRectangle r = aux_rects.get(j);
 				double[] x = r.getX();
 				double[] y = r.getY();
 				if(x[0]<minX)
@@ -146,7 +146,7 @@ public class Leaf extends AbstractNode{
 			maxX = maxY = Double.MIN_VALUE;
 		
 			for(int j=m-1+i; j<2*RTree.t; j++){
-				IRectangle r = rects.get(j);
+				IRectangle r = aux_rects.get(j);
 				double[] x = r.getX();
 				double[] y = r.getY();
 				if(x[0]<minX)
