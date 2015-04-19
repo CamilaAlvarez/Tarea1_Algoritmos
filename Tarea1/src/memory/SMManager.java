@@ -18,6 +18,9 @@ public class SMManager implements IMemoryManager{
 		this.nodeBuffer = new Buffer(bufferSize);
 	}
 	
+	public int getVisitados(){
+		return visitados;
+	}
 	
 	public INode loadNode(long pos) throws IOException{
 		INode n = nodeBuffer.findNode(pos);
@@ -60,11 +63,13 @@ public class SMManager implements IMemoryManager{
 	private void writeToFile(byte[] archivo , long posicion) throws IOException{
 		file.seek(posicion);
 		file.write(archivo);
+		visitados++;
 	}
 	
 	private void readFromFile(byte[] archivo , long posicion) throws IOException{
 		file.seek(posicion);
 		file.read(archivo);
+		visitados++;
 	}
 
 

@@ -74,18 +74,7 @@ public class Leaf extends AbstractNode{
 	private RectangleContainer split(IRectangle r, RTree t) {
 		LinkedList<Pair> children = generateSplit(r);
 		
-		if(isRoot){
-			this.isRoot=false;
-			INode newRoot = new InternalNode(RTree.t, true, children);
-			/*TODO se debe guardar la raiz en memoria secundaria */
-			t.root = newRoot;
-			
-			return null;
-		}		
-		Pair p1, p2;
-		p1 = children.getFirst();
-		p2 = children.getLast();
-		return new RectangleContainer(p1,p2,this.parentMBR); 
+		return generalSplit(children, t);
 	}
 	
 	private LinkedList<Pair> generateSplit(IRectangle r){

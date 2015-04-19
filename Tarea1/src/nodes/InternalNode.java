@@ -125,18 +125,7 @@ public class InternalNode extends AbstractNode{
 		aux_list.add(p1);
 		aux_list.add(p2);
 		LinkedList<Pair> children = generateSplit(aux_list);
-		if(this.isRoot){
-			this.isRoot=false;
-			INode newRoot = new InternalNode(RTree.t, true, children);
-			/* se debe guardar la raiz en memoria secundaria */
-			t.root = newRoot;
-			
-			return null;
-		}
-		Pair p_1, p_2;
-		p_1 = children.getFirst();
-		p_2 = children.getLast();
-		return new RectangleContainer(p_1,p_2,this.parentMBR); 
+		return generalSplit(children, t); 
 		
 	}
 	

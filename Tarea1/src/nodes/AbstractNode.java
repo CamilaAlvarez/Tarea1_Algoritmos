@@ -2,12 +2,12 @@ package nodes;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedList;
 
 import rectangles.IRectangle;
-import rectangles.MBR;
 import trees.RTree;
+import utils.Pair;
+import utils.RectangleContainer;
 
 
 public abstract class AbstractNode implements INode{
@@ -93,6 +93,22 @@ public abstract class AbstractNode implements INode{
 		}
 		margen += 2*(maxX-minX)+2*(maxY-minY);
 		return margen;
+	}
+	
+	protected RectangleContainer generalSplit(LinkedList<Pair> children, RTree t){
+		if(this.isRoot){
+			this.isRoot=false;
+			INode newRoot = new InternalNode(RTree.t, true, children);
+			/* se debe guardar la raiz en memoria secundaria */
+			t.root = newRoot;
+			
+			return null;
+		}
+		Pair p_1, p_2;
+		p_1 = children.getFirst();
+		p_2 = children.getLast();
+		return new RectangleContainer(p_1,p_2,this.parentMBR); 
+		
 	}
 
 

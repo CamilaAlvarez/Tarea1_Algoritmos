@@ -36,6 +36,7 @@ public class Buffer {
 	public boolean updateNode(INode n){
 		for (int i = 0; i < bufferSize; i++) {
 			if(dirBuffer[i] == n.getPosition()){
+				loaded[i] = n;
 				priority.improvePriority(i);
 				modify[i] = true;
 				return true;
