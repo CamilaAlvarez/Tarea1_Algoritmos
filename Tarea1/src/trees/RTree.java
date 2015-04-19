@@ -11,11 +11,13 @@ public class RTree extends AbstractRTree {
 	public static int t;
 	public static IMemoryManager memManager;
 	
-	public RTree(int t){
+	public RTree(int t) throws IOException{
 		// true indica que se es raiz
 		RTree.t= t;
 		root = new Leaf(t,true);
+		root.setFilePosition(0);
 		RTree.memManager = new PMManager();
+		memManager.saveNode(root);
 	}
 
 	/**

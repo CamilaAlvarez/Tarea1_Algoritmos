@@ -286,8 +286,9 @@ public class InternalNode extends AbstractNode{
 	 * si hay empate se sigue con lo que dice el enunciado
 	 * @param r Rectangulo que se va a agregar
 	 * @return Nodo donde se va a insertar
+	 * @throws IOException 
 	 */
-	private INode obtainInsertNode(MyRectangle r){
+	private INode obtainInsertNode(MyRectangle r) throws IOException{
 		if(!childIsLeaf){
 			/* Se carga el hijo en un nodo interno
 			   en verdad children va a guardar las posiciones de los hijos en 
@@ -303,8 +304,9 @@ public class InternalNode extends AbstractNode{
 	 * overlap 
 	 * @param r rectangulo a insertar
 	 * @return nodo donde se insertara
+	 * @throws IOException 
 	 */
-	private INode obtainFromMinOverlap(MyRectangle r) {
+	private INode obtainFromMinOverlap(MyRectangle r) throws IOException {
 		ArrayList<Integer> minMBROverlapIndex = new ArrayList<Integer>();
 		double minOverlapChange = Double.MAX_VALUE;
 		for(int i=0 ; i<keyNumber ; i++){
@@ -319,7 +321,9 @@ public class InternalNode extends AbstractNode{
 		}
 		
 		if(minMBROverlapIndex.size()==1){
-			return children[minMBROverlapIndex.get(0)];
+			Pair p = mbrList.get(minMBROverlapIndex.get(0));
+			INode n = RTree.memManager.loadNode(p.childPos);
+			return n;
 		}
 		
 		return this.getNodeMinAreaChange(r);

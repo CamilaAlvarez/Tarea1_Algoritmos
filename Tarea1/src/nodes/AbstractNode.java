@@ -1,5 +1,6 @@
 package nodes;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -99,12 +100,13 @@ public abstract class AbstractNode implements INode{
 		return margen;
 	}
 	
-	protected RectangleContainer generalSplit(LinkedList<Pair> children, RTree t){
+	protected RectangleContainer generalSplit(LinkedList<Pair> children, RTree t) throws IOException{
 		if(this.isRoot){
 			this.isRoot=false;
 			INode newRoot = new InternalNode(RTree.t, true, children);
 			/* se debe guardar la raiz en memoria secundaria */
 			t.root = newRoot;
+			RTree.memManager.saveNode(newRoot);
 			
 			return null;
 		}

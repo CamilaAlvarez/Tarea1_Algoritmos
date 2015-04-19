@@ -21,9 +21,13 @@ public class PMManager implements IMemoryManager{
 	
 	public void saveNode(INode n) throws IOException {
 		long pos = n.getPosition();
-		nodes.remove((int) pos);
-		nodes.add((int) pos, n);
-		
+		if(pos==nodes.size()){
+			nodes.add(n);
+		}
+		else{
+			nodes.remove((int) pos);
+			nodes.add((int) pos, n);
+		}		
 	}
 
 
