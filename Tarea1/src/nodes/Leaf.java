@@ -43,13 +43,6 @@ public class Leaf extends AbstractNode{
 		this.parentMBR = mbr;
 	}
 	
-	/*protected Leaf(IRectangle[] elements, String nodeName, int keyNumber){
-		NodeTuples = elements;
-		fileName = nodeName;
-		this.keyNumber = keyNumber;
-	}*/
-	
-	
 	@Override
 	public boolean isLeaf() {
 		return true;
@@ -112,14 +105,10 @@ public class Leaf extends AbstractNode{
 		double min_margin = Math.min(min_margin0, min_margin1);
 		
 		LinkedList<Pair> children;
-		if(min_margin==margenX_0)
+		if(min_margin==margenX_0 || min_margin==margenX_1)
 			children = getNewChildren(aux_rects, new RectangleComparatorX(0),m, end);
-		else if(min_margin==margenX_1)
-			children = getNewChildren(aux_rects, new RectangleComparatorX(1),m, end);
-		else if(min_margin==margenY_0)
-			children = getNewChildren(aux_rects, new RectangleComparatorY(0),m, end);
 		else
-			children = getNewChildren(aux_rects, new RectangleComparatorY(1),m, end);
+			children = getNewChildren(aux_rects, new RectangleComparatorY(0),m, end);
 		
 		return children;
 	}

@@ -159,14 +159,10 @@ public class InternalNode extends AbstractNode{
 		double min_margin = Math.min(min_margin0, min_margin1);
 		
 		LinkedList<Pair> children;
-		if(min_margin==margenX_0)
+		if(min_margin==margenX_0 || min_margin==margenX_1)
 			children = getNewChildren(aux_list, new PairComparatorX(0),m, end);
-		else if(min_margin==margenX_1)
-			children = getNewChildren(aux_list, new PairComparatorX(1),m, end);
-		else if(min_margin==margenY_0)
+		else 
 			children = getNewChildren(aux_list, new PairComparatorY(0),m, end);
-		else
-			children = getNewChildren(aux_list, new PairComparatorY(1),m, end);
 		
 		return children;
 	}
