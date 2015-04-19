@@ -60,7 +60,7 @@ public class SMManager implements IMemoryManager{
 		nodeBuffer.addNode(n,toFree,true);
 	}
 	
-	private void writeToFile(byte[] archivo , long posicion) throws IOException{
+	private void writeToFile(byte[] archivo , long posicion) throws IOException {
 		file.seek(posicion);
 		file.write(archivo);
 		visitados++;
@@ -74,7 +74,7 @@ public class SMManager implements IMemoryManager{
 
 
 	@Override
-	public long getPosition() {
+	public long getNewPosition() {
 		// TODO Auto-generated method stub
 		return 0;
 	}

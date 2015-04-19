@@ -1,5 +1,6 @@
 package nodes;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -50,9 +51,10 @@ public class Leaf extends AbstractNode{
 
 	/**
 	 * Permite insertar en hoja
+	 * @throws IOException 
 	 */
 	@Override
-	public RectangleContainer insertNoReinsert(MyRectangle r, RTree t) {
+	public RectangleContainer insertNoReinsert(MyRectangle r, RTree t) throws IOException {
 		if(this.keyNumber>=maxChildNumber){
 			return this.split(r,t);
 		}
@@ -70,14 +72,15 @@ public class Leaf extends AbstractNode{
 	 * @param t arbol al que pertenece el nodo
 	 * @return RectangleContainer posee los dos nuevos MBR, con referencias a sus hijos
 	 * y el viejo MBR que será eliminado
+	 * @throws IOException 
 	 */
-	private RectangleContainer split(IRectangle r, RTree t) {
+	private RectangleContainer split(IRectangle r, RTree t) throws IOException {
 		LinkedList<Pair> children = generateSplit(r);
 		
 		return generalSplit(children, t);
 	}
 	
-	private LinkedList<Pair> generateSplit(IRectangle r){
+	private LinkedList<Pair> generateSplit(IRectangle r) throws IOException{
 		LinkedList<IRectangle> aux_rects = new LinkedList<IRectangle>(rects);
 		aux_rects.add(r);
 		int m = 4*(2*RTree.t+1)/100;
@@ -103,7 +106,7 @@ public class Leaf extends AbstractNode{
 	}
 
 	private LinkedList<Pair> getNewChildren(LinkedList<IRectangle> aux_rects, Comparator<IRectangle> rectangleComparator,
-			int m, int end) {
+			int m, int end) throws IOException {
 		Collections.sort(aux_rects, rectangleComparator);
 		
 		double intersection = Double.MAX_VALUE;
@@ -172,56 +175,64 @@ public class Leaf extends AbstractNode{
 			}
 		}
 		
+		MBR[] vals;
+		INode n1, n2;
 		if(hash_min_index.size()==1){
 			/* Unica parte que cambia un poco con respecto a InternalNode */
 			int key = (int) hash_min_index.keySet().toArray()[0];
-			MBR[] vals = hash_min_index.get(key);
+			vals = hash_min_index.get(key);
 			LinkedList<IRectangle> r = new LinkedList<IRectangle>();
 			for(int i=0; i<m-1+key; i++){
 				r.add(aux_rects.get(i));
 			}
-			INode n1 = new Leaf(RTree.t, false, vals[0],r);
+			n1 = new Leaf(RTree.t, false, vals[0],r);
 			r = new LinkedList<IRectangle>();
 			for(int i=m-1+key; i<aux_rects.size(); i++){
 				r.add((MyRectangle) aux_rects.get(i));
 			}
-			INode n2 = new Leaf(RTree.t, false, vals[1],r);
+			n2 = new Leaf(RTree.t, false, vals[1],r);
 			/*agregar elementos hojas, y luego guardar nuevos nodos en hijos*/
-			LinkedList<Pair> ret = new LinkedList<Pair>();
-			ret.add(new Pair(vals[0],1));
-			ret.add( new Pair(vals[0],1));
-			return ret;
 		}
-		/* Aqui revisar cual distribucion genera mbrs de menor area */
-		Set<Integer> keys = hash_min_index.keySet();
-		double min_area = Double.MAX_VALUE;
-		int min_area_key = -1;
-		MBR[] val;
-		for(Integer k : keys){
-			val = hash_min_index.get(k);
-			double area = val[0].getArea() + val[1].getArea();
-			
-			if(area<min_area){
-				min_area = area;
-				min_area_key = k;
+		else{
+			/* Aqui revisar cual distribucion genera mbrs de menor area */
+			Set<Integer> keys = hash_min_index.keySet();
+			double min_area = Double.MAX_VALUE;
+			int min_area_key = -1;
+			MBR[] val;
+			for(Integer k : keys){
+				val = hash_min_index.get(k);
+				double area = val[0].getArea() + val[1].getArea();
+				
+				if(area<min_area){
+					min_area = area;
+					min_area_key = k;
+				}
 			}
+			
+			vals = hash_min_index.get(min_area_key);
+			LinkedList<IRectangle> r = new LinkedList<IRectangle>();
+			for(int i=0; i<m-1+min_area_key; i++){
+				r.add(aux_rects.get(i));
+			}
+			
+			n1 = new Leaf(RTree.t, false, vals[0],r);
+			
+			r = new LinkedList<IRectangle>();
+			for(int i=m-1+min_area_key; i<aux_rects.size(); i++){
+				r.add(aux_rects.get(i));
+			}
+			
+			n2 = new Leaf(RTree.t, false, vals[1],r);			
+			/*agregar elementos hojas, y luego guardar nuevos nodos en hijos*/
 		}
 		
-		MBR[] vals = hash_min_index.get(min_area_key);
-		LinkedList<IRectangle> r = new LinkedList<IRectangle>();
-		for(int i=0; i<m-1+min_area_key; i++){
-			r.add(aux_rects.get(i));
-		}
-		INode n1 = new Leaf(RTree.t, false, vals[0],r);
-		r = new LinkedList<IRectangle>();
-		for(int i=m-1+min_area_key; i<aux_rects.size(); i++){
-			r.add(aux_rects.get(i));
-		}
-		INode n2 = new Leaf(RTree.t, false, vals[1],r);
-		/*agregar elementos hojas, y luego guardar nuevos nodos en hijos*/
+		n1.setFilePosition(this.getPosition());
+		n2.setFilePosition(RTree.memManager.getNewPosition());
+		RTree.memManager.saveNode(n1);
+		RTree.memManager.saveNode(n2);
 		LinkedList<Pair> ret = new LinkedList<Pair>();
 		ret.add(new Pair(vals[0],1));
-		ret.add( new Pair(vals[0],1));
+		ret.add( new Pair(vals[1],1));
 		return ret;
 	}
 

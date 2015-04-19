@@ -34,6 +34,10 @@ public abstract class AbstractNode implements INode{
 		return keyNumber;
 	}
 	
+	public void setFilePosition(long pos){
+		this.filePos=pos;
+	} 
+	
 	/**
 	 * Define si un nodo es raiz
 	 */

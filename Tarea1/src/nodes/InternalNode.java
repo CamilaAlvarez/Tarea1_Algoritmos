@@ -1,5 +1,6 @@
 package nodes;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -83,9 +84,10 @@ public class InternalNode extends AbstractNode{
 	 * @return RectangleContainer que tiene dentro un rectangulo y una posicion de 
 	 * un nuevo hijo. La idea es que esto se pase hacia arriba de manera recursiva, 
 	 * pudiendo actualizar el arbol
+	 * @throws IOException 
 	 */
 	@Override
-	public RectangleContainer insertNoReinsert(MyRectangle r, RTree t){
+	public RectangleContainer insertNoReinsert(MyRectangle r, RTree t) throws IOException{
 		INode insertPlace = this.obtainInsertNode(r);
 		RectangleContainer aux = insertPlace.insertNoReinsert(r,t);
 		

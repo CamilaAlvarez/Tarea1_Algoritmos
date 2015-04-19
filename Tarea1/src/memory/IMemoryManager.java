@@ -24,5 +24,5 @@ public interface IMemoryManager {
 	 * Entrega la siguiente posición disponible en memoria
 	 * @return
 	 */
-	public long getPosition();
+	public long getNewPosition();
 }

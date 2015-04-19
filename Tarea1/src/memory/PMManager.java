@@ -28,7 +28,7 @@ public class PMManager implements IMemoryManager{
 
 
 	@Override
-	public long getPosition() {
+	public long getNewPosition() {
 		return nodes.size();
 	}
 
