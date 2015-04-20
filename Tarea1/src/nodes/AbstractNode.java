@@ -13,11 +13,24 @@ import utils.RectangleContainer;
 
 public abstract class AbstractNode implements INode{
 	protected int keyNumber;
-	protected String fileName;
 	protected boolean isRoot;
 	protected int maxChildNumber;
 	protected IRectangle parentMBR;
 	protected long filePos;
+	protected boolean isLeaf;
+	protected boolean childIsLeaf;
+	
+	protected void constructor(int keyNumber, boolean isRoot, IRectangle parentMBR,
+			long filePos, boolean isLeaf, boolean childIsLeaf){
+		
+		this.keyNumber=keyNumber;
+		this.isRoot=isRoot;
+		this.maxChildNumber=2*RTree.t;
+		this.parentMBR=parentMBR;
+		this.filePos=filePos;
+		this.isLeaf=isLeaf;
+		this.childIsLeaf=childIsLeaf;		
+	}
 	
 	/**
 	 * Aumenta la variable de numero de llaves en 1
@@ -100,10 +113,11 @@ public abstract class AbstractNode implements INode{
 		return margen;
 	}
 	
-	protected RectangleContainer generalSplit(LinkedList<Pair> children, RTree t) throws IOException{
+	protected RectangleContainer generalSplit(LinkedList<Pair> children, RTree t, boolean childIsLeaf) throws IOException{
 		if(this.isRoot){
 			this.isRoot=false;
-			INode newRoot = new InternalNode(RTree.t, true, children);
+			INode newRoot = new InternalNode(children.size(), true, null, RTree.memManager.getNewPosition(), children, childIsLeaf);
+			
 			/* se debe guardar la raiz en memoria secundaria */
 			t.root = newRoot;
 			RTree.memManager.saveNode(newRoot);

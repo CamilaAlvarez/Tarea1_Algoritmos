@@ -1,11 +1,13 @@
 package trees;
 
 import java.io.IOException;
+import java.util.LinkedList;
 
 import memory.IMemoryManager;
 import memory.PMManager;
 import nodes.INode;
 import nodes.Leaf;
+import rectangles.IRectangle;
 import rectangles.MyRectangle;
 
 public class RTree implements IRTree {
@@ -16,8 +18,7 @@ public class RTree implements IRTree {
 	public RTree(int t) throws IOException{
 		// true indica que se es raiz
 		RTree.t= t;
-		root = new Leaf(t,true);
-		root.setFilePosition(0);
+		root = new Leaf(0, true, null, 0, new LinkedList<IRectangle>());
 		RTree.memManager = new PMManager();
 		memManager.saveNode(root);
 	}

@@ -15,7 +15,7 @@ public class Main {
 		int t = 10;
 		RTree tree = new RTree(t);
 		int i=1;
-		ArrayList<MyRectangle> rects = RectangleGenerator.generateRandom((int) Math.pow(2, 21));
+		ArrayList<MyRectangle> rects = RectangleGenerator.generateRandom(1000);
 		for(MyRectangle r : rects){
 			System.out.println("insertando n°: "+i);
 			tree.insertar(r);

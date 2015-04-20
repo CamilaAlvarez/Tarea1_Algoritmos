@@ -23,29 +23,27 @@ import utils.Pair;
 public class Leaf extends AbstractNode{
 	private LinkedList<IRectangle> rects;
 
-	public Leaf(int t, boolean isRoot){
-		maxChildNumber = 2*t;
-		this.isRoot = isRoot;
-		this.parentMBR = null;
-		this.rects= new LinkedList<IRectangle>();
-		this.keyNumber = 0;
+	public Leaf(int keyNumber, boolean isRoot, IRectangle parentMBR,
+			long filePos, LinkedList<IRectangle> r){
+		this.rects=new LinkedList<IRectangle>(r);		
+		this.constructor(keyNumber,isRoot,parentMBR,filePos,true,false);		
 	}
 	
-	public Leaf(int t, boolean isRoot, MBR mbr){
-		maxChildNumber = 2*t;
-		this.isRoot = isRoot;
-		this.parentMBR = mbr;
-		this.rects= new LinkedList<IRectangle>();
-		this.keyNumber = 0;
-	}
-	
-	public Leaf(int t, boolean isRoot, MBR mbr, LinkedList<IRectangle> rects){
-		maxChildNumber = 2*t;
-		this.rects= new LinkedList<IRectangle>(rects);
-		this.isRoot = isRoot;
-		this.parentMBR = mbr;
-		this.keyNumber = rects.size();
-	}
+//	public Leaf(int t, boolean isRoot, MBR mbr){
+//		maxChildNumber = 2*t;
+//		this.isRoot = isRoot;
+//		this.parentMBR = mbr;
+//		this.rects= new LinkedList<IRectangle>();
+//		this.keyNumber = 0;
+//	}
+//	
+//	public Leaf(int t, boolean isRoot, MBR mbr, LinkedList<IRectangle> rects){
+//		maxChildNumber = 2*t;
+//		this.rects= new LinkedList<IRectangle>(rects);
+//		this.isRoot = isRoot;
+//		this.parentMBR = mbr;
+//		this.keyNumber = rects.size();
+//	}
 	
 	@Override
 	public boolean isLeaf() {
@@ -62,7 +60,7 @@ public class Leaf extends AbstractNode{
 			return this.split(r,t);
 		}
 		else{
-			rects.add(keyNumber, r);
+			rects.add(r);
 			this.addKey();
 		}
 		return null;
@@ -80,14 +78,14 @@ public class Leaf extends AbstractNode{
 	private RectangleContainer split(IRectangle r, RTree t) throws IOException {
 		LinkedList<Pair> children = generateSplit(r);
 		
-		return generalSplit(children, t);
+		return generalSplit(children, t, true);
 	}
 	
 	private LinkedList<Pair> generateSplit(IRectangle r) throws IOException{
 		LinkedList<IRectangle> aux_rects = new LinkedList<IRectangle>(rects);
 		aux_rects.add(r);
 		int m = 4*(2*RTree.t+1)/10;
-		int end = 6*(2*RTree.t +1)/10;
+		int end = 6*(2*RTree.t+1)/10;
 		
 		double margenX_0 = this.margen(aux_rects, new RectangleComparatorX(0),m, end);
 		double margenY_0 = this.margen(aux_rects, new RectangleComparatorY(0),m, end);
@@ -188,12 +186,13 @@ public class Leaf extends AbstractNode{
 			for(int i=0; i<m-1+key; i++){
 				r.add(aux_rects.get(i));
 			}
-			n1 = new Leaf(RTree.t, false, vals[0],r);
+			n1 = new Leaf(r.size(), false, vals[0], this.getPosition(), r);
+			
 			r = new LinkedList<IRectangle>();
 			for(int i=m-1+key; i<aux_rects.size(); i++){
-				r.add((MyRectangle) aux_rects.get(i));
+				r.add(aux_rects.get(i));
 			}
-			n2 = new Leaf(RTree.t, false, vals[1],r);
+			n2 = new Leaf(r.size(), false, vals[1], RTree.memManager.getNewPosition(), r);
 			/*agregar elementos hojas, y luego guardar nuevos nodos en hijos*/
 		}
 		else{
@@ -218,24 +217,23 @@ public class Leaf extends AbstractNode{
 				r.add(aux_rects.get(i));
 			}
 			
-			n1 = new Leaf(RTree.t, false, vals[0],r);
+			n1 = new Leaf(r.size(), false, vals[0], this.getPosition(), r);
 			
 			r = new LinkedList<IRectangle>();
 			for(int i=m-1+min_area_key; i<aux_rects.size(); i++){
 				r.add(aux_rects.get(i));
 			}
-			
-			n2 = new Leaf(RTree.t, false, vals[1],r);			
+
+			n2 = new Leaf(r.size(), false, vals[1], RTree.memManager.getNewPosition(), r);
 			/*agregar elementos hojas, y luego guardar nuevos nodos en hijos*/
 		}
 		
-		n1.setFilePosition(this.getPosition());
-		n2.setFilePosition(RTree.memManager.getNewPosition());
+		
 		RTree.memManager.saveNode(n1);
 		RTree.memManager.saveNode(n2);
 		LinkedList<Pair> ret = new LinkedList<Pair>();
-		ret.add(new Pair(vals[0],1));
-		ret.add( new Pair(vals[1],1));
+		ret.add(new Pair(vals[0],n1.getPosition()));
+		ret.add( new Pair(vals[1],n2.getPosition()));
 		return ret;
 	}
 

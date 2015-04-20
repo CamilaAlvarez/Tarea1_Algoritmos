@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Set;
 
-import com.sun.xml.internal.fastinfoset.algorithm.IntEncodingAlgorithm;
-
 import rectangles.IRectangle;
 import rectangles.MBR;
 import rectangles.MyRectangle;
@@ -31,38 +29,45 @@ public class InternalNode extends AbstractNode{
 	//TODO los hijos no son nodos,son direcciones a disco (un número)
 	private LinkedList<Pair> mbrList;
 	
-	
-	public InternalNode(int t, boolean isRoot){
-		maxChildNumber = 2*t;
-		this.isRoot = isRoot;
-		this.parentMBR = null;
-		this.mbrList= new LinkedList<Pair>();
-		this.keyNumber = 0;
+	public InternalNode(int keyNumber, boolean isRoot, IRectangle parentMBR,
+			long filePos, LinkedList<Pair> p, boolean childIsLeaf){
+		this.mbrList=p;
+		this.constructor(keyNumber,isRoot,parentMBR,filePos,false,childIsLeaf);	
+		
+		
 	}
 	
-	public InternalNode(int t, boolean isRoot, MBR mbr){
-		maxChildNumber = 2*t;
-		this.isRoot = isRoot;
-		this.parentMBR = mbr;
-		this.mbrList= new LinkedList<Pair>();
-		this.keyNumber = 0;
-	}
-	
-	public InternalNode(int t, boolean isRoot, LinkedList<Pair> pairs){
-		maxChildNumber = 2*t;
-		this.isRoot = isRoot;
-		this.parentMBR = null;
-		this.mbrList= new LinkedList<Pair>(pairs);
-		this.keyNumber = mbrList.size();
-	}
-	
-	public InternalNode(int t, boolean isRoot, MBR mbr, LinkedList<Pair> pairs){
-		maxChildNumber = 2*t;
-		this.isRoot = isRoot;
-		this.parentMBR = null;
-		this.mbrList= new LinkedList<Pair>(pairs);
-		this.keyNumber = mbrList.size();
-	}
+//	public InternalNode(int t, boolean isRoot){
+//		maxChildNumber = 2*t;
+//		this.isRoot = isRoot;
+//		this.parentMBR = null;
+//		this.mbrList= new LinkedList<Pair>();
+//		this.keyNumber = 0;
+//	}
+//	
+//	public InternalNode(int t, boolean isRoot, MBR mbr){
+//		maxChildNumber = 2*t;
+//		this.isRoot = isRoot;
+//		this.parentMBR = mbr;
+//		this.mbrList= new LinkedList<Pair>();
+//		this.keyNumber = 0;
+//	}
+//	
+//	public InternalNode(int t, boolean isRoot, LinkedList<Pair> pairs){
+//		maxChildNumber = 2*t;
+//		this.isRoot = isRoot;
+//		this.parentMBR = null;
+//		this.mbrList= new LinkedList<Pair>(pairs);
+//		this.keyNumber = mbrList.size();
+//	}
+//	
+//	public InternalNode(int t, boolean isRoot, MBR mbr, LinkedList<Pair> pairs){
+//		maxChildNumber = 2*t;
+//		this.isRoot = isRoot;
+//		this.parentMBR = null;
+//		this.mbrList= new LinkedList<Pair>(pairs);
+//		this.keyNumber = mbrList.size();
+//	}
 	
 	/*protected InternalNode(IRectangle[] elements, String nodeName, int keyNumber,
 			boolean childIsLeaf){
@@ -134,11 +139,11 @@ public class InternalNode extends AbstractNode{
 		aux_list.add(p1);
 		aux_list.add(p2);
 		LinkedList<Pair> children = generateSplit(aux_list);
-		return generalSplit(children, t); 
+		return generalSplit(children, t,false); 
 		
 	}
 	
-	private LinkedList<Pair> generateSplit(LinkedList<Pair> aux_list){
+	private LinkedList<Pair> generateSplit(LinkedList<Pair> aux_list) throws IOException{
 		LinkedList<IRectangle> aux_rects = new LinkedList<IRectangle>();
 		for(Pair p : aux_list)
 			aux_rects.add(p.r);
@@ -166,7 +171,7 @@ public class InternalNode extends AbstractNode{
 	}
 
 	private LinkedList<Pair> getNewChildren(LinkedList<Pair> aux_list, Comparator<Pair> PairComparator,
-			int m, int end) {
+			int m, int end) throws IOException {
 		Collections.sort(aux_list, PairComparator);
 		
 		double intersection = Double.MAX_VALUE;
@@ -235,56 +240,62 @@ public class InternalNode extends AbstractNode{
 			}
 		}
 		
+		MBR[] vals;
+		INode n1, n2;
+		
 		if(hash_min_index.size()==1){
 			/* Unica parte que cambia un poco con respecto a InternalNode */
 			int key = (int) hash_min_index.keySet().toArray()[0];
-			MBR[] vals = hash_min_index.get(key);
+			vals = hash_min_index.get(key);
 			LinkedList<Pair> r = new LinkedList<Pair>();
 			for(int i=0; i<m-1+key; i++){
 				r.add(aux_list.get(i));
 			}
-			INode n1 = new InternalNode(RTree.t, false, vals[0],r);
+			n1 = new InternalNode(RTree.t, false, vals[0],r);
 			r = new LinkedList<Pair>();
 			for(int i=m-1+key; i<aux_list.size(); i++){
 				r.add(aux_list.get(i));
 			}
-			INode n2 = new InternalNode(RTree.t, false, vals[1],r);
+			n2 = new InternalNode(RTree.t, false, vals[1],r);
 			/*agregar elementos hojas, y luego guardar nuevos nodos en hijos*/
-			LinkedList<Pair> ret = new LinkedList<Pair>();
-			ret.add(new Pair(vals[0],1));
-			ret.add( new Pair(vals[0],1));
-			return ret;
 		}
-		/* Aqui revisar cual distribucion genera mbrs de menor area */
-		Set<Integer> keys = hash_min_index.keySet();
-		double min_area = Double.MAX_VALUE;
-		int min_area_key = -1;
-		MBR[] val;
-		for(Integer k : keys){
-			val = hash_min_index.get(k);
-			double area = val[0].getArea() + val[1].getArea();
-			
-			if(area<min_area){
-				min_area = area;
-				min_area_key = k;
+		else{		
+			/* Aqui revisar cual distribucion genera mbrs de menor area */
+			Set<Integer> keys = hash_min_index.keySet();
+			double min_area = Double.MAX_VALUE;
+			int min_area_key = -1;
+			MBR[] val;
+			for(Integer k : keys){
+				val = hash_min_index.get(k);
+				double area = val[0].getArea() + val[1].getArea();
+				
+				if(area<min_area){
+					min_area = area;
+					min_area_key = k;
+				}
 			}
+			
+			vals = hash_min_index.get(min_area_key);
+			LinkedList<Pair> r = new LinkedList<Pair>();
+			for(int i=0; i<m-1+min_area_key; i++){
+				r.add(aux_list.get(i));
+			}
+			n1 = new InternalNode(RTree.t, false, vals[0],r);
+			r = new LinkedList<Pair>();
+			for(int i=m-1+min_area_key; i<aux_list.size(); i++){
+				r.add(aux_list.get(i));
+			}
+			n2 = new InternalNode(RTree.t, false, vals[1],r);
+			/*agregar elementos hojas, y luego guardar nuevos nodos en hijos*/
+
 		}
-		
-		MBR[] vals = hash_min_index.get(min_area_key);
-		LinkedList<Pair> r = new LinkedList<Pair>();
-		for(int i=0; i<m-1+min_area_key; i++){
-			r.add(aux_list.get(i));
-		}
-		INode n1 = new InternalNode(RTree.t, false, vals[0],r);
-		r = new LinkedList<Pair>();
-		for(int i=m-1+min_area_key; i<aux_list.size(); i++){
-			r.add(aux_list.get(i));
-		}
-		INode n2 = new InternalNode(RTree.t, false, vals[1],r);
-		/*agregar elementos hojas, y luego guardar nuevos nodos en hijos*/
+		n1.setFilePosition(this.getPosition());
+		n2.setFilePosition(RTree.memManager.getNewPosition());
+		RTree.memManager.saveNode(n1);
+		RTree.memManager.saveNode(n2);
 		LinkedList<Pair> ret = new LinkedList<Pair>();
-		ret.add(new Pair(vals[0],1));
-		ret.add( new Pair(vals[0],1));
+		ret.add(new Pair(vals[0],n1.getPosition()));
+		ret.add( new Pair(vals[1],n2.getPosition()));
 		return ret;
 	}
 
