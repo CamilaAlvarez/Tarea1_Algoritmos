@@ -18,4 +18,5 @@
 <fullyQualifiedTypeName name="utils.DeletionPasser"/>
 <fullyQualifiedTypeName name="trees.RTree"/>
 <fullyQualifiedTypeName name="utils.Pair"/>
+<fullyQualifiedTypeName name="memory.PriorityList"/>
 </qualifiedTypeNameHistroy>

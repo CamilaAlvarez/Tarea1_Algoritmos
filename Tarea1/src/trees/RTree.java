@@ -38,6 +38,10 @@ public class RTree implements IRTree {
 		return root.buscar(r);
 		
 	}
+	
+	private void borrar(MyRectangle r) throws IOException{
+		root.borrar(r, 0);
+	}
 
 
 

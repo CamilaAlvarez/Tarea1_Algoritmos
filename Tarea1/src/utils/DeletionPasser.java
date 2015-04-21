@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 
 public class DeletionPasser {
-	public LinkedList<DeletionPair> deletedNodes = new LinkedList<DeletionPair>();
+	public LinkedList<DeletionTriplet> deletedNodes = new LinkedList<DeletionTriplet>();
 	public Pair newMBRPair=null;
 	public boolean needToRemove=false; 
 	

@@ -8,8 +8,8 @@ import java.util.LinkedList;
 
 import rectangles.IRectangle;
 import trees.RTree;
-import utils.DeletionPair;
 import utils.DeletionPasser;
+import utils.DeletionTriplet;
 import utils.Pair;
 import utils.RectangleContainer;
 
@@ -186,9 +186,11 @@ public abstract class AbstractNode implements INode{
 	
 	public abstract boolean eq (Object o);
 
-	public DeletionPasser condensar(DeletionPasser d) {
+	public DeletionPasser condensar(DeletionPasser d, int height) {
+		if(this.isRoot())/*reinsertar*/
+			this.ReinsertDeletedNodes(d);
 		if(this.keyNumber<RTree.t){
-			d.deletedNodes.push(new DeletionPair(this, this.getPosition()));
+			d.deletedNodes.push(new DeletionTriplet(this, this.getPosition(),height));
 			d.needToRemove=true;
 		}
 		else{
@@ -196,6 +198,11 @@ public abstract class AbstractNode implements INode{
 			d.setMBRPair(p);
 		}
 		return d;
+	}
+
+	protected void ReinsertDeletedNodes(DeletionPasser d) {
+		// TODO Auto-generated method stub
+		
 	}
 
 
