@@ -517,7 +517,7 @@ public class InternalNode extends AbstractNode{
 					mbrList.remove(p);
 					break;
 				}
-			
+			d.newMBRPair=null;
 			return this.condensar(d);
 		}
 		
