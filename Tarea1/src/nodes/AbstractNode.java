@@ -70,7 +70,7 @@ public abstract class AbstractNode implements INode{
 			Comparator<IRectangle> rectangleComparator, int m, int end) {
 		Collections.sort(aux_rects, rectangleComparator);
 		double margen=0;
-		for(int i = 0; i<end; i++){
+		for(int i = 1; i<=end; i++){
 			margen += this.calcularMargen(m,i, aux_rects);
 		}
 		return margen;
@@ -99,7 +99,7 @@ public abstract class AbstractNode implements INode{
 		minX = minY = Double.MAX_VALUE;
 		maxX = maxY = Double.MIN_VALUE;
 	
-		for(int j=m-1+i; j<2*RTree.t; j++){
+		for(int j=m-1+i; j<2*RTree.t+1; j++){
 			IRectangle r = rects.get(j);
 			double[] x = r.getX();
 			double[] y = r.getY();
