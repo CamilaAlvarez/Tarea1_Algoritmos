@@ -38,7 +38,7 @@ public class MBR extends AbstractRectangle{
 	 * @param r Rectagulo a chequear
 	 * @return true si el MBR lo contiene
 	 */
-	public boolean contains(MyRectangle r) {
+	public boolean contains(IRectangle r) {
 		double[] r_x = r.getX();
 		double[] r_y = r.getY();
 		double[] aux_x = this.x_coords;

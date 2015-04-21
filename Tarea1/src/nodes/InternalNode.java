@@ -16,6 +16,7 @@ import rectangles.PairComparatorY;
 import rectangles.RectangleComparatorX;
 import rectangles.RectangleComparatorY;
 import trees.RTree;
+import utils.DeletionPasser;
 import utils.Pair;
 import utils.RectangleContainer;
 
@@ -135,7 +136,7 @@ public class InternalNode extends AbstractNode{
 		return null;
 	}
 	
-	private Pair getNewMBR() {
+	public Pair getNewMBR() {
 		double minX,minY,maxX,maxY;
 		minX = minY = Double.MAX_VALUE;
 		maxX = maxY = Double.MIN_VALUE;
@@ -152,6 +153,7 @@ public class InternalNode extends AbstractNode{
 		double[] newX = {minX, maxX};
 		double[] newY = {minY, minY};
 		return new Pair(new MBR(newX, newY), this.getPosition());
+
 	}
 
 	/**
@@ -487,6 +489,46 @@ public class InternalNode extends AbstractNode{
 	public boolean eq(Object o) {
 		// TODO Auto-generated method stub
 		return true;
+	}
+
+	@Override
+	public DeletionPasser borrar(IRectangle r) throws IOException {
+		DeletionPasser d = null;
+		for(Pair p : mbrList){
+			if(p.r.contains(r)){
+				INode n = RTree.memManager.loadNode(p.childPos);
+				d = n.borrar(r);
+				if(d!=null)
+					break;
+			}
+		}
+		/* Preguntar por la raiz, si es asi reinsertar */
+		if(d!=null){
+			if(d.newMBRPair!=null){
+				/*Actualizar MBR */
+				for(Pair p : mbrList)
+					if(p.childPos==d.newMBRPair.childPos){
+						p.r=d.newMBRPair.r;
+						break;
+					}
+				return null;
+			}
+			/*que pasa si el anterior no termino con underflow? => no voy
+			 * a entrar al if nunca, y si termino con underflow, el nodo a retirar queda
+			 * arriba*/
+			if(d.needToRemove){
+				for(Pair p : mbrList)
+					if(p.childPos==d.deletedNodes.peekFirst().childPos){
+						mbrList.remove(p);
+						break;
+					}
+				d.newMBRPair=null;
+				d.needToRemove=false;
+				return this.condensar(d);
+			}
+		}
+		
+		return null;
 	}
 
 	
