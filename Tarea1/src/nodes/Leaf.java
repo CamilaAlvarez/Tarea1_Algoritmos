@@ -109,8 +109,8 @@ public class Leaf extends AbstractNode{
 	private LinkedList<Pair> generateSplit(IRectangle r) throws IOException{
 		LinkedList<IRectangle> aux_rects = new LinkedList<IRectangle>(rects);
 		aux_rects.add(r);
-		int m = 4*(2*RTree.t+1)/10;
-		int end = 6*(2*RTree.t+1)/10;
+		int m = 4*(2*RTree.t)/10;
+		int end = 2*RTree.t+1-m;
 		
 		double margenX_0 = this.margen(aux_rects, new RectangleComparatorX(0),m, end);
 		double margenY_0 = this.margen(aux_rects, new RectangleComparatorY(0),m, end);
@@ -138,10 +138,12 @@ public class Leaf extends AbstractNode{
 		double intersection = Double.MAX_VALUE;
 		HashMap<Integer, MBR[]> hash_min_index= new HashMap<Integer, MBR[]>();
 		MBR first_mbr, second_mbr;
-		for(int i = 0; i<end; i++){
+		for(int i = 1; i<end; i++){
 			double minX, maxX, minY, maxY;
 			double[] mbr_x = new double[2];
 			double[] mbr_y = new double[2];
+			double[] mbr_x2 = new double[2];
+			double[] mbr_y2 = new double[2];
 			minX = minY = Double.MAX_VALUE;
 			maxX = maxY = Double.MIN_VALUE;
 			
@@ -182,11 +184,11 @@ public class Leaf extends AbstractNode{
 					maxY = y[1];
 			}
 			
-			mbr_x[0] = minX;
-			mbr_x[1] = maxX;
-			mbr_y[0] = minY;
-			mbr_y[1] = maxY;
-			second_mbr = new MBR(mbr_x,mbr_y);
+			mbr_x2[0] = minX;
+			mbr_x2[1] = maxX;
+			mbr_y2[0] = minY;
+			mbr_y2[1] = maxY;
+			second_mbr = new MBR(mbr_x2,mbr_y2);
 			
 			double inter = first_mbr.intersectionArea(second_mbr);
 			if(intersection>inter){

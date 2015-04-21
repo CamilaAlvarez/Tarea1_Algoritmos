@@ -3,7 +3,6 @@
 <fullyQualifiedTypeName name="java.lang.Double"/>
 <fullyQualifiedTypeName name="nodes.Leaf"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
-<fullyQualifiedTypeName name="rectangles.MyRectangle"/>
 <fullyQualifiedTypeName name="java.util.HashMap"/>
 <fullyQualifiedTypeName name="rectangles.PairComparatorX"/>
 <fullyQualifiedTypeName name="rectangles.PairComparatorY"/>
@@ -19,4 +18,6 @@
 <fullyQualifiedTypeName name="trees.RTree"/>
 <fullyQualifiedTypeName name="utils.Pair"/>
 <fullyQualifiedTypeName name="memory.PriorityList"/>
+<fullyQualifiedTypeName name="utils.DeletionTriplet"/>
+<fullyQualifiedTypeName name="rectangles.MyRectangle"/>
 </qualifiedTypeNameHistroy>
