@@ -136,6 +136,7 @@ public abstract class AbstractNode implements INode{
 	public DeletionPasser condensar(DeletionPasser d) {
 		if(this.keyNumber<RTree.t){
 			d.deletedNodes.push(new DeletionPair(this, this.getPosition()));
+			d.needToRemove=true;
 		}
 		else{
 			Pair p = this.getNewMBR();

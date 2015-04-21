@@ -511,14 +511,18 @@ public class InternalNode extends AbstractNode{
 				return null;
 			}
 			/*que pasa si el anterior no termino con underflow? => no voy
-			 * a entrar al if nunca*/
-			for(Pair p : mbrList)
-				if(p.childPos==d.deletedNodes.peekFirst().childPos){
-					mbrList.remove(p);
-					break;
-				}
-			d.newMBRPair=null;
-			return this.condensar(d);
+			 * a entrar al if nunca, y si termino con underflow, el nodo a retirar queda
+			 * arriba*/
+			if(d.needToRemove){
+				for(Pair p : mbrList)
+					if(p.childPos==d.deletedNodes.peekFirst().childPos){
+						mbrList.remove(p);
+						break;
+					}
+				d.newMBRPair=null;
+				d.needToRemove=false;
+				return this.condensar(d);
+			}
 		}
 		
 		return null;
