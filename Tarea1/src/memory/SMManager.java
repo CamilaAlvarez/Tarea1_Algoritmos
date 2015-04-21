@@ -11,11 +11,15 @@ public class SMManager implements IMemoryManager{
 	private RandomAccessFile file;
 	private int visitados;
 	private Buffer nodeBuffer;
+	private long currentPos;
+	private int blockSize;
 	
 	public SMManager(int nodeSize, int bufferSize) throws FileNotFoundException{
 		this.file = new RandomAccessFile("tree.obj", "rw");
 		this.visitados = 0;
 		this.nodeBuffer = new Buffer(bufferSize);
+		this.blockSize=nodeSize;
+		this.currentPos=0;
 	}
 	
 	public int getVisitados(){
@@ -75,8 +79,9 @@ public class SMManager implements IMemoryManager{
 
 	@Override
 	public long getNewPosition() {
-		// TODO Auto-generated method stub
-		return 0;
+		long c = this.currentPos;
+		this.currentPos=this.currentPos+this.blockSize;
+		return c;
 	}
 	
 }
