@@ -7,6 +7,8 @@ import java.util.LinkedList;
 
 import rectangles.IRectangle;
 import trees.RTree;
+import utils.DeletionPair;
+import utils.DeletionPasser;
 import utils.Pair;
 import utils.RectangleContainer;
 
@@ -129,6 +131,17 @@ public abstract class AbstractNode implements INode{
 		p_2 = children.getLast();
 		return new RectangleContainer(p_1,p_2,this.parentMBR); 
 		
+	}
+	
+	public DeletionPasser condensar(DeletionPasser d) {
+		if(this.keyNumber<RTree.t){
+			d.deletedNodes.push(new DeletionPair(this, this.getPosition()));
+		}
+		else{
+			Pair p = this.getNewMBR();
+			d.setMBRPair(p);
+		}
+		return d;
 	}
 
 

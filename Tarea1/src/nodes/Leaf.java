@@ -13,6 +13,8 @@ import rectangles.MyRectangle;
 import rectangles.RectangleComparatorX;
 import rectangles.RectangleComparatorY;
 import trees.RTree;
+import utils.DeletionPair;
+import utils.DeletionPasser;
 import utils.RectangleContainer;
 import utils.Pair;
 
@@ -70,7 +72,7 @@ public class Leaf extends AbstractNode{
 		
 	}
 
-	private Pair getNewMBR() {
+	public Pair getNewMBR() {
 		double minX,minY,maxX,maxY;
 		minX = minY = Double.MAX_VALUE;
 		maxX = maxY = Double.MIN_VALUE;
@@ -276,5 +278,17 @@ public class Leaf extends AbstractNode{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public DeletionPasser borrar(IRectangle r) throws IOException {
+		if(rects.contains(r)){
+			rects.remove(r);
+			DeletionPasser d = new DeletionPasser();
+			return this.condensar(d);
+		}
+		return null;
+	}
+
+	
 
 }
