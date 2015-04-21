@@ -282,11 +282,11 @@ public class Leaf extends AbstractNode{
 	}
 
 	@Override
-	public DeletionPasser borrar(IRectangle r) throws IOException {
+	public DeletionPasser borrar(IRectangle r, int height) throws IOException {
 		if(rects.contains(r)){
 			rects.remove(r);
 			DeletionPasser d = new DeletionPasser();
-			return this.condensar(d);
+			return this.condensar(d, height);
 		}
 		return null;
 	}

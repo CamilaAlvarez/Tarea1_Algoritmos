@@ -2,15 +2,21 @@
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="java.lang.Double"/>
 <fullyQualifiedTypeName name="nodes.Leaf"/>
-<fullyQualifiedTypeName name="trees.RTree"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="rectangles.MyRectangle"/>
 <fullyQualifiedTypeName name="java.util.HashMap"/>
-<fullyQualifiedTypeName name="utils.Pair"/>
-<fullyQualifiedTypeName name="rectangles.IRectangle"/>
 <fullyQualifiedTypeName name="rectangles.PairComparatorX"/>
 <fullyQualifiedTypeName name="rectangles.PairComparatorY"/>
-<fullyQualifiedTypeName name="java.util.LinkedList"/>
 <fullyQualifiedTypeName name="com.sun.xml.internal.fastinfoset.algorithm.IntEncodingAlgorithm"/>
 <fullyQualifiedTypeName name="nodes.InternalNode"/>
+<fullyQualifiedTypeName name="utils.RectangleContainer"/>
+<fullyQualifiedTypeName name="rectangles.IRectangle"/>
+<fullyQualifiedTypeName name="java.util.LinkedList"/>
+<fullyQualifiedTypeName name="rectangles.MBR"/>
+<fullyQualifiedTypeName name="nodes.INode"/>
+<fullyQualifiedTypeName name="utils.DeletionPair"/>
+<fullyQualifiedTypeName name="utils.DeletionPasser"/>
+<fullyQualifiedTypeName name="trees.RTree"/>
+<fullyQualifiedTypeName name="utils.Pair"/>
+<fullyQualifiedTypeName name="memory.PriorityList"/>
 </qualifiedTypeNameHistroy>

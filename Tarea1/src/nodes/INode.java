@@ -26,7 +26,7 @@ public interface INode{
 	public void writeBuffer(byte[] data);
 	public long getPosition();
 	public void setFilePosition(long position);
-	public DeletionPasser borrar(IRectangle r) throws IOException;
+	public DeletionPasser borrar(IRectangle r, int height) throws IOException;
 	public Pair getNewMBR();
 	public void draw(LinkedList<DrawRectangle> r) throws IOException;
 

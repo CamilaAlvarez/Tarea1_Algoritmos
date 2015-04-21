@@ -1,6 +1,7 @@
 package memory;
 
 import nodes.INode;
+import memory.PriorityList;
 
 public class Buffer {
 	private INode[] loaded;

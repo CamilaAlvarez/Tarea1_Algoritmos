@@ -470,7 +470,8 @@ public class InternalNode extends AbstractNode{
 	 * Busca un rectangulo en el nodo
 	 * @throws IOException 
 	 */
-	@Override
+	/* Arregalr esto */
+	@Override 
 	public boolean buscar(MyRectangle r) throws IOException {
 		boolean res=false;
 		MBR rect;
@@ -494,18 +495,19 @@ public class InternalNode extends AbstractNode{
 		return true;
 	}
 
+	/* Altura desde raiz(h=0) a hojas, esto por simplicidad */
 	@Override
-	public DeletionPasser borrar(IRectangle r) throws IOException {
+	public DeletionPasser borrar(IRectangle r, int height) throws IOException {
 		DeletionPasser d = null;
 		for(Pair p : mbrList){
 			if(p.r.contains(r)){
 				INode n = RTree.memManager.loadNode(p.childPos);
-				d = n.borrar(r);
+				d = n.borrar(r, height+1);
 				if(d!=null)
 					break;
 			}
 		}
-		/* Preguntar por la raiz, si es asi reinsertar */
+		
 		if(d!=null){
 			if(d.newMBRPair!=null){
 				/*Actualizar MBR */
@@ -527,7 +529,7 @@ public class InternalNode extends AbstractNode{
 					}
 				d.newMBRPair=null;
 				d.needToRemove=false;
-				return this.condensar(d);
+				return this.condensar(d,height);
 			}
 		}
 		

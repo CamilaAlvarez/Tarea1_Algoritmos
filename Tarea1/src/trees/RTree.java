@@ -40,6 +40,10 @@ public class RTree implements IRTree {
 		return root.buscar(r);
 		
 	}
+	
+	private void borrar(MyRectangle r) throws IOException{
+		root.borrar(r, 0);
+	}
 
 	public void draw(LinkedList<DrawRectangle> r) throws IOException {
 		root.draw(r);
