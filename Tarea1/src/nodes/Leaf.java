@@ -56,15 +56,36 @@ public class Leaf extends AbstractNode{
 	 */
 	@Override
 	public RectangleContainer insertNoReinsert(MyRectangle r, RTree t) throws IOException {
+		Pair p1;
 		if(this.keyNumber>=maxChildNumber){
 			return this.split(r,t);
 		}
 		else{
 			rects.add(r);
 			this.addKey();
+			p1 = getNewMBR();
+			this.parentMBR = p1.r;
 		}
-		return null;
+		return new RectangleContainer(p1, null, null);
 		
+	}
+
+	private Pair getNewMBR() {
+		double minX,minY,maxX,maxY;
+		minX = minY = Double.MAX_VALUE;
+		maxX = maxY = Double.MIN_VALUE;
+		
+		for(IRectangle r : rects){
+			double x[] = r.getX();
+			double y[] = r.getY();
+			if(x[0]<minX) minX=x[0];
+			if(x[1]>maxX) maxX=x[1];
+			if(y[0]<minY) minY=y[0];
+			if(y[1]>maxY) maxY=y[1];
+		}
+		double[] newX = {minX, maxX};
+		double[] newY = {minY, minY};
+		return new Pair(new MBR(newX, newY), this.getPosition());
 	}
 
 	/**
