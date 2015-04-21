@@ -100,8 +100,18 @@ public class InternalNode extends AbstractNode{
 		INode insertPlace = this.obtainInsertNode(r);
 		RectangleContainer aux = insertPlace.insertNoReinsert(r,t);
 		
-		if(aux==null)
-			return null;
+		if(aux.p2==null){
+			Pair p1 = aux.p1;
+			for(Pair p : mbrList)
+				if(p.childPos==p1.childPos){
+					p.r = p1.r;
+					break;
+				}
+			
+			Pair p_aux = getNewMBR();
+			this.parentMBR = p_aux.r;
+			return new RectangleContainer(p_aux, null, null);
+		}
 		
 		/* se remueve el mbr anterior */
 		for(Pair p : mbrList)
@@ -125,6 +135,26 @@ public class InternalNode extends AbstractNode{
 		return null;
 	}
 	
+	private Pair getNewMBR() {
+		double minX,minY,maxX,maxY;
+		minX = minY = Double.MAX_VALUE;
+		maxX = maxY = Double.MIN_VALUE;
+		
+		for(Pair p : mbrList){
+			MBR r = p.r;
+			double x[] = r.getX();
+			double y[] = r.getY();
+			if(x[0]<minX) minX=x[0];
+			if(x[1]>maxX) maxX=x[1];
+			if(y[0]<minY) minY=y[0];
+			if(y[1]>maxY) maxY=y[1];
+		}
+		double[] newX = {minX, maxX};
+		double[] newY = {minY, minY};
+		return new Pair(new MBR(newX, newY), this.getPosition());
+		return null;
+	}
+
 	/**
 	 * Método encargado de hacer split de un nodo
 	 * @param p1 par a agregar
