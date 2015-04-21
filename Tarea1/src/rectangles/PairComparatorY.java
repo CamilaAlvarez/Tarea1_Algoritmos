@@ -19,6 +19,12 @@ public class PairComparatorY implements Comparator<Pair> {
 	public int compare(Pair p1, Pair p2) {
 		IRectangle r1 = p1.r;
 		IRectangle r2 = p2.r;
-		return new Double(r1.getY()[i]).compareTo(new Double(r2.getY()[i]));
+		
+		double d1 = r1.getY()[i];
+		double d2 = r2.getY()[i];
+		if(d1>d2) return 1;
+		if(d1<d2) return -1;
+		
+		return 1;
 	}
 }

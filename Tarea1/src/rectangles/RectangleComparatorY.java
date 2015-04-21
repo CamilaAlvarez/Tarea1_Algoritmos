@@ -14,6 +14,11 @@ public class RectangleComparatorY implements Comparator<IRectangle> {
 	}
 	@Override
 	public int compare(IRectangle r1, IRectangle r2) {
-		return new Double(r1.getY()[i]).compareTo(new Double(r2.getY()[i]));
+		double d1 = r1.getY()[i];
+		double d2 = r2.getY()[i];
+		if(d1>d2) return 1;
+		if(d1<d2) return -1;
+		
+		return 1;
 	}
 }
