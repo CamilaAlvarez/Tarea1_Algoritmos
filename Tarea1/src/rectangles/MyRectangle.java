@@ -7,5 +7,9 @@ public class MyRectangle extends AbstractRectangle{
 		this.y_coords=y;
 	}
 	
+	public String toString(){
+		String s =  (x_coords[0]+","+ x_coords[1]+","+y_coords[0]+","+y_coords[1]);
+		return s;
+	}
 
 }

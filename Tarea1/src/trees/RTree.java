@@ -1,5 +1,7 @@
 package trees;
 
+import gui.DrawRectangle;
+
 import java.io.IOException;
 import java.util.LinkedList;
 
@@ -36,6 +38,11 @@ public class RTree implements IRTree {
 	@Override
 	public boolean buscar(MyRectangle r) throws IOException {
 		return root.buscar(r);
+		
+	}
+
+	public void draw(LinkedList<DrawRectangle> r) throws IOException {
+		root.draw(r);
 		
 	}
 

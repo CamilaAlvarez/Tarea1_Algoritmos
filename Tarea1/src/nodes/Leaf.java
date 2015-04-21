@@ -1,5 +1,8 @@
 package nodes;
 
+import gui.DrawRectangle;
+
+import java.awt.Color;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
@@ -13,10 +16,9 @@ import rectangles.MyRectangle;
 import rectangles.RectangleComparatorX;
 import rectangles.RectangleComparatorY;
 import trees.RTree;
-import utils.DeletionPair;
 import utils.DeletionPasser;
-import utils.RectangleContainer;
 import utils.Pair;
+import utils.RectangleContainer;
 
 /**
  * Clase que representa una hoja
@@ -86,7 +88,7 @@ public class Leaf extends AbstractNode{
 			if(y[1]>maxY) maxY=y[1];
 		}
 		double[] newX = {minX, maxX};
-		double[] newY = {minY, minY};
+		double[] newY = {minY, maxY};
 		return new Pair(new MBR(newX, newY), this.getPosition());
 	}
 
@@ -166,7 +168,7 @@ public class Leaf extends AbstractNode{
 			minX = minY = Double.MAX_VALUE;
 			maxX = maxY = Double.MIN_VALUE;
 		
-			for(int j=m-1+i; j<2*RTree.t; j++){
+			for(int j=m-1+i; j<2*RTree.t+1; j++){
 				IRectangle r = aux_rects.get(j);
 				double[] x = r.getX();
 				double[] y = r.getY();
@@ -287,6 +289,31 @@ public class Leaf extends AbstractNode{
 			return this.condensar(d);
 		}
 		return null;
+	}
+
+	@Override
+	public void draw(LinkedList<DrawRectangle> rectangles) {
+		System.out.println("leaf");
+		//IRectangle mbr = parentMBR;
+		//double[] x1 = mbr.getX();
+		//double[] y1 = mbr.getY();
+		//System.out.println(x1[0]+","+ x1[1]+","+y1[0]+","+y1[1]);
+		//rectangles.add(new DrawRectangle(x1[0], x1[1], y1[0], y1[1], Color.RED));
+		for(IRectangle r: rects){
+			double[] x = r.getX();
+			double[] y = r.getY();
+			System.out.println(x[0]+","+ x[1]+","+y[0]+","+y[1]);
+			rectangles.add(new DrawRectangle(x[0], x[1], y[0], y[1], Color.BLUE));
+		}
+		
+	}
+	
+	public String toString(){
+		String s = "";
+		for(IRectangle r: rects){
+			s = s + r.toString();
+		}
+		return s;
 	}
 
 	

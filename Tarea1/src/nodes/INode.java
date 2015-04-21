@@ -1,6 +1,9 @@
 package nodes;
 
+import gui.DrawRectangle;
+
 import java.io.IOException;
+import java.util.LinkedList;
 
 import rectangles.IRectangle;
 import rectangles.MyRectangle;
@@ -25,5 +28,6 @@ public interface INode{
 	public void setFilePosition(long position);
 	public DeletionPasser borrar(IRectangle r) throws IOException;
 	public Pair getNewMBR();
+	public void draw(LinkedList<DrawRectangle> r) throws IOException;
 
 }
