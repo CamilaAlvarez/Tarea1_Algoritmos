@@ -214,10 +214,10 @@ public class InternalNode extends AbstractNode{
 		MBR first_mbr, second_mbr;
 		for(int i = 1; i<=end; i++){
 			
-			double[] mbr_x = new double[2];
+			/*double[] mbr_x = new double[2];
 			double[] mbr_y = new double[2];
 			double[] mbr_x2 = new double[2];
-			double[] mbr_y2 = new double[2];
+			double[] mbr_y2 = new double[2];*/
 			minX = minY = Double.MAX_VALUE;
 			maxX = maxY = Double.MIN_VALUE;
 			
@@ -235,10 +235,12 @@ public class InternalNode extends AbstractNode{
 				if(y[1]>maxY)
 					maxY = y[1];
 			}
-			mbr_x[0] = minX;
+			/*mbr_x[0] = minX;
 			mbr_x[1] = maxX;
 			mbr_y[0] = minY;
-			mbr_y[1] = maxY;
+			mbr_y[1] = maxY;*/
+			double[] mbr_x={minX, maxX};
+			double[] mbr_y={minY, maxY};
 			first_mbr = new MBR(mbr_x,mbr_y);
 			
 			minX2= minY2 = Double.MAX_VALUE;
@@ -258,10 +260,12 @@ public class InternalNode extends AbstractNode{
 					maxY2 = y[1];
 			}
 			
-			mbr_x2[0] = minX2;
+			/*mbr_x2[0] = minX2;
 			mbr_x2[1] = maxX2;
 			mbr_y2[0] = minY2;
-			mbr_y2[1] = maxY2;
+			mbr_y2[1] = maxY2;*/
+			double[] mbr_x2={minX2, maxX2};
+			double[] mbr_y2={minY2, maxY2};
 			second_mbr = new MBR(mbr_x2,mbr_y2);
 			
 			double inter = first_mbr.intersectionArea(second_mbr);
