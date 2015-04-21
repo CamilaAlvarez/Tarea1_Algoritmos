@@ -152,7 +152,7 @@ public class InternalNode extends AbstractNode{
 		double[] newX = {minX, maxX};
 		double[] newY = {minY, minY};
 		return new Pair(new MBR(newX, newY), this.getPosition());
-		return null;
+
 	}
 
 	/**
