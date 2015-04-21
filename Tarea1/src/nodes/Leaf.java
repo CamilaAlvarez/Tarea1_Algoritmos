@@ -133,47 +133,43 @@ public class Leaf extends AbstractNode{
 
 	private LinkedList<Pair> getNewChildren(LinkedList<IRectangle> aux_rects, Comparator<IRectangle> rectangleComparator,
 			int m, int end) throws IOException {
-		System.out.println(aux_rects);
+		
 		Collections.sort(aux_rects, rectangleComparator);
-		System.out.println(aux_rects);
+		
 		double intersection = Double.MAX_VALUE;
 		HashMap<Integer, MBR[]> hash_min_index= new HashMap<Integer, MBR[]>();
-		MBR first_mbr, second_mbr;
-		double minX, maxX, minY, maxY,minX2, maxX2, minY2, maxY2;
+		
 		for(int i = 1; i<=end; i++){
-			
-			/*double[] mbr_x = new double[2];
-			double[] mbr_y = new double[2];
-			double[] mbr_x2 = new double[2];
-			double[] mbr_y2 = new double[2];*/
-			minX = minY = Double.MAX_VALUE;
-			maxX = maxY = Double.MIN_VALUE;
+			MBR first_mbr, second_mbr;
+			double minX, maxX, minY, maxY,minX2, maxX2, minY2, maxY2;
+			minX = Double.MAX_VALUE;
+			minY = Double.MAX_VALUE;
+			maxX = Double.MIN_NORMAL;
+			maxY = Double.MIN_VALUE;
 			
 			/* iterar para la primera parte de la distribucion */
 			for(int j=0; j<m-1+i; j++){
 				IRectangle r = aux_rects.get(j);
-				double[] x = r.getX();
-				double[] y = r.getY();
-				if(x[0]<minX)
-					minX = x[0];
-				if(x[1]>maxX)
-					maxX = x[1];
-				if(y[0]<minY)
-					minY = y[0];
-				if(y[1]>maxY)
-					maxY = y[1];
+				double[] x1 = r.getX();
+				double[] y1 = r.getY();
+				if(x1[0]<minX)
+					minX = x1[0];
+				if(x1[1]>maxX)
+					maxX = x1[1];
+				if(y1[0]<minY)
+					minY = y1[0];
+				if(y1[1]>maxY)
+					maxY = y1[1];
 			}
-			/*mbr_x[0] = minX;
-			mbr_x[1] = maxX;
-			mbr_y[0] = minY;
-			mbr_y[1] = maxY;*/
 			double[] mbr_x={minX, maxX};
 			double[] mbr_y={minY, maxY};
 			first_mbr = new MBR(mbr_x,mbr_y);
 			
-			minX2 = minY2 = Double.MAX_VALUE;
-			maxX2 = maxY2 = Double.MIN_VALUE;
-		
+			minX2 = Double.MAX_VALUE;
+			minY2 = Double.MAX_VALUE;
+			maxX2 = Double.MIN_VALUE;
+			maxY2 = Double.MIN_VALUE;
+			
 			for(int j=m-1+i; j<2*RTree.t+1; j++){
 				IRectangle r = aux_rects.get(j);
 				double[] x = r.getX();
@@ -188,10 +184,6 @@ public class Leaf extends AbstractNode{
 					maxY2 = y[1];
 			}
 			
-			/*mbr_x2[0] = minX2;
-			mbr_x2[1] = maxX2;
-			mbr_y2[0] = minY2;
-			mbr_y2[1] = maxY2;*/
 			double[] mbr_x2={minX2, maxX2};
 			double[] mbr_y2={minY2, maxY2};
 			second_mbr = new MBR(mbr_x2,mbr_y2);

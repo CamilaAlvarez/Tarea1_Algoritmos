@@ -63,17 +63,23 @@ public abstract class AbstractRectangle implements IRectangle{
 		double[] r_y = r.getY();
 		double[] aux_x = this.x_coords;
 		double[] aux_y = this.y_coords;
+		double[] auxX = new double[2];
+		auxX[0]=aux_x[0];
+		auxX[1]=aux_x[1];
+		double[] auxY = new double[2];
+		auxY[0]=aux_y[0];
+		auxY[1]=aux_y[1];
 		
 		if(r_x[0]>aux_x[0])
-			aux_x[0]=r_x[0];
+			auxX[0]=r_x[0];
 		if(r_x[1]<aux_x[1])
-			aux_x[1]=r_x[1];
+			auxX[1]=r_x[1];
 		if(r_y[0]>aux_y[0])
-			aux_y[0]=r_y[0];
+			auxY[0]=r_y[0];
 		if(r_y[1]<aux_y[1])
-			aux_y[1]=r_y[1];
+			auxY[1]=r_y[1];
 		
-		return (Math.max(0D, aux_x[1]-aux_x[0])*(aux_y[1]-aux_y[0]));
+		return (Math.max(0D, auxX[1]-auxX[0])*(auxY[1]-auxY[0]));
 		
 	}
 	

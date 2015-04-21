@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="java.lang.Double"/>
 <fullyQualifiedTypeName name="nodes.Leaf"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="java.util.HashMap"/>
@@ -20,4 +19,5 @@
 <fullyQualifiedTypeName name="memory.PriorityList"/>
 <fullyQualifiedTypeName name="utils.DeletionTriplet"/>
 <fullyQualifiedTypeName name="rectangles.MyRectangle"/>
+<fullyQualifiedTypeName name="java.lang.Double"/>
 </qualifiedTypeNameHistroy>

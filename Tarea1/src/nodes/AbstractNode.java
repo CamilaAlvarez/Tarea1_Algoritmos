@@ -77,6 +77,7 @@ public abstract class AbstractNode implements INode{
 	}
 
 	protected double calcularMargen(int m, int i, LinkedList<IRectangle> rects) {
+		
 		double minX, maxX, minY, maxY;
 		minX = minY = Double.MAX_VALUE;
 		maxX = maxY = Double.MIN_VALUE;
