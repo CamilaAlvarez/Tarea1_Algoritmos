@@ -11,6 +11,8 @@ public interface IRectangle {
 	boolean equals(Object r);
 
 	double intersectionArea(IRectangle iRectangle);
+	
+	int writeBuffer(byte[] data, int pos);
 
 
 }

@@ -152,7 +152,6 @@ public class InternalNode extends AbstractNode{
 		double[] newX = {minX, maxX};
 		double[] newY = {minY, minY};
 		return new Pair(new MBR(newX, newY), this.getPosition());
-		return null;
 	}
 
 	/**
@@ -281,12 +280,14 @@ public class InternalNode extends AbstractNode{
 			for(int i=0; i<m-1+key; i++){
 				r.add(aux_list.get(i));
 			}
-			n1 = new InternalNode(RTree.t, false, vals[0],r);
+			n1 = new InternalNode(r.size(), false, vals[0], this.getPosition(),
+					r, childIsLeaf);
 			r = new LinkedList<Pair>();
 			for(int i=m-1+key; i<aux_list.size(); i++){
 				r.add(aux_list.get(i));
 			}
-			n2 = new InternalNode(RTree.t, false, vals[1],r);
+			n2 = new InternalNode(r.size(), false, vals[1], RTree.memManager.getNewPosition(),
+					r, childIsLeaf);
 			/*agregar elementos hojas, y luego guardar nuevos nodos en hijos*/
 		}
 		else{		
@@ -310,17 +311,17 @@ public class InternalNode extends AbstractNode{
 			for(int i=0; i<m-1+min_area_key; i++){
 				r.add(aux_list.get(i));
 			}
-			n1 = new InternalNode(RTree.t, false, vals[0],r);
+			n1 = new InternalNode(r.size(), false, vals[0], this.getPosition(),
+					r, childIsLeaf);
 			r = new LinkedList<Pair>();
 			for(int i=m-1+min_area_key; i<aux_list.size(); i++){
 				r.add(aux_list.get(i));
 			}
-			n2 = new InternalNode(RTree.t, false, vals[1],r);
+			n2 = new InternalNode(r.size(), false, vals[1], RTree.memManager.getNewPosition(),
+					r, childIsLeaf);
 			/*agregar elementos hojas, y luego guardar nuevos nodos en hijos*/
 
 		}
-		n1.setFilePosition(this.getPosition());
-		n2.setFilePosition(RTree.memManager.getNewPosition());
 		RTree.memManager.saveNode(n1);
 		RTree.memManager.saveNode(n2);
 		LinkedList<Pair> ret = new LinkedList<Pair>();
@@ -481,10 +482,11 @@ public class InternalNode extends AbstractNode{
 		return res;
 	}
 
+
 	@Override
-	public byte[] writeBuffer() {
+	public boolean eq(Object o) {
 		// TODO Auto-generated method stub
-		return null;
+		return true;
 	}
 
 	

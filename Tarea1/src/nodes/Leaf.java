@@ -272,9 +272,9 @@ public class Leaf extends AbstractNode{
 	}
 
 	@Override
-	public byte[] writeBuffer() {
+	public boolean eq(Object o) {
 		// TODO Auto-generated method stub
-		return null;
+		return true;
 	}
 
 }

@@ -1,6 +1,7 @@
 package nodes;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -130,6 +131,58 @@ public abstract class AbstractNode implements INode{
 		return new RectangleContainer(p_1,p_2,this.parentMBR); 
 		
 	}
-
+	
+	@Override
+	public void writeBuffer(byte[] data){
+		int pos = 0;
+		
+		ByteBuffer.wrap(data,pos,4).putInt(keyNumber);
+		pos += 4;
+		byte root = isRoot?(byte)1:(byte)0;
+		ByteBuffer.wrap(data, pos, 1).put(root);
+		pos += 1;
+		byte leaf = isLeaf?(byte)1:(byte)0;
+		ByteBuffer.wrap(data, pos, 1).put(leaf);
+		pos += 1;
+		byte child = childIsLeaf?(byte)1:(byte)0;
+		ByteBuffer.wrap(data, pos, 1).put(child);
+		pos += 1;
+		ByteBuffer.wrap(data, pos, 8).putLong(filePos);
+		pos += 8;
+		
+		pos = parentMBR.writeBuffer(data, pos);		
+		
+//		for (int i = 0; i < numeroNodos; i++) {
+//			getMBRI(i).WriteByte(archivo, pos);
+//			pos += (16*dimension);
+//		}
+//		pos += (maxElem - numeroNodos) * 16 * dimension;
+//		
+//		for (int i = 0; i < numeroNodos; i++) {
+//			ByteBuffer.wrap(archivo, pos, 8).putLong(getArchivoHijo(i));
+//			pos +=8;
+//		}
+//		return null;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof AbstractNode){
+			AbstractNode node = (AbstractNode)obj;
+			boolean result = true;
+			result = result && (this.getKeyNumber() == node.getKeyNumber());
+			result = result && (this.isLeaf == node.isLeaf);
+			result = result && (this.isRoot == node.isRoot);
+			result = result && (this.childIsLeaf == node.childIsLeaf);
+			result = result && (this.filePos == node.filePos);
+			result = result && (this.parentMBR.equals(node.parentMBR));			
+			result = result && eq(node);			
+			
+			return result;
+		}
+		return false;
+	}
+	
+	public abstract boolean eq (Object o);
 
 }

@@ -31,12 +31,18 @@ public class SMManager implements IMemoryManager{
 		if(n!=null){
 			return n;
 		}
+		int toFree;
+		byte[] data = new byte[4096];
 		//si el nodo no esta en el buffer se busca el que tenga peor prioridad
-		int toFree = nodeBuffer.getLastPriority();
-		//si fue modificado, se va a disco para dejar espacio
-		byte[] data = nodeBuffer.getNode(toFree).writeBuffer();
-		if(nodeBuffer.wasModified(toFree)){
-			writeToFile(data, nodeBuffer.getFilePosition(toFree));
+		if(!nodeBuffer.isFull()){
+			toFree = nodeBuffer.getBufferPos();
+		}else{
+			toFree = nodeBuffer.getLastPriority();
+			//si fue modificado, se va a disco para dejar espacio
+			nodeBuffer.getNode(toFree).writeBuffer(data);
+			if(nodeBuffer.wasModified(toFree)){
+				writeToFile(data, nodeBuffer.getFilePosition(toFree));
+			}
 		}
 		//se lee del disco el nodo buscado
 		readFromFile(data, nodeBuffer.getFilePosition(toFree));
@@ -52,25 +58,31 @@ public class SMManager implements IMemoryManager{
 		if(nodeBuffer.updateNode(n)){
 			return;
 		}	
+		//Si el buffer no esta lleno
+		else if(!nodeBuffer.isFull()){
+			nodeBuffer.addNode(n,nodeBuffer.getBufferPos(),true);
+			return;
+		}
 		//Si no esta en el buffer, se busca el nodo con menor prioridad
 		//en este para hacer espacio al nodo a grabar
 		int toFree = nodeBuffer.getLastPriority();
 		//Si el nodo fue modificado hay que mandarlo a disco
 		if(nodeBuffer.wasModified(toFree)){
-			byte[] data = nodeBuffer.getNode(toFree).writeBuffer();
+			byte[] data = new byte[4096];
+			nodeBuffer.getNode(toFree).writeBuffer(data);
 			writeToFile(data, nodeBuffer.getFilePosition(toFree));
 		}
 		//Se agrega el nuevo nodo al buffer 
 		nodeBuffer.addNode(n,toFree,true);
 	}
 	
-	private void writeToFile(byte[] archivo , long posicion) throws IOException {
+	public void writeToFile(byte[] archivo , long posicion) throws IOException {
 		file.seek(posicion);
 		file.write(archivo);
 		visitados++;
 	}
 	
-	private void readFromFile(byte[] archivo , long posicion) throws IOException{
+	public void readFromFile(byte[] archivo , long posicion) throws IOException{
 		file.seek(posicion);
 		file.read(archivo);
 		visitados++;

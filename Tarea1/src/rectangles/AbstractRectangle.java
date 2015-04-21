@@ -1,5 +1,7 @@
 package rectangles;
 
+import java.nio.ByteBuffer;
+
 public abstract class AbstractRectangle implements IRectangle{
 	protected double[] x_coords;
 	protected double[] y_coords;
@@ -56,6 +58,26 @@ public abstract class AbstractRectangle implements IRectangle{
 			aux_y[1]=r_y[1];
 		
 		return (aux_x[1]-aux_x[0])*(aux_y[1]-aux_y[0]);
+		
+	}
+	
+	@Override
+	public int writeBuffer(byte[] data, int pos) {
+		double x1 = x_coords[0];
+		double x2 = x_coords[1];
+		double y1 = y_coords[0];
+		double y2 = y_coords[1];
+		
+		ByteBuffer.wrap(data, pos, 8).putDouble(x1);
+		pos += 8;
+		ByteBuffer.wrap(data, pos, 8).putDouble(x2);
+		pos += 8;
+		ByteBuffer.wrap(data, pos, 8).putDouble(y1);
+		pos += 8;
+		ByteBuffer.wrap(data, pos, 8).putDouble(y2);
+		pos += 8;
+		
+		return pos;
 		
 	}
 }

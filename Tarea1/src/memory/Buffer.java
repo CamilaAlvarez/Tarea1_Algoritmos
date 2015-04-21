@@ -8,6 +8,7 @@ public class Buffer {
 	private boolean[] modify;
 	private long[] dirBuffer;
 	private int bufferSize;
+	private int used;
 	
 	public Buffer(int bufferSize) {
 		this.loaded = new INode[bufferSize];
@@ -15,6 +16,7 @@ public class Buffer {
 		this.modify = new boolean[bufferSize];
 		this.dirBuffer = new long[bufferSize];
 		this.bufferSize = bufferSize;
+		this.used = 0;
 	}
 	
 	public INode getNode(int pos){
@@ -26,12 +28,19 @@ public class Buffer {
 	}
 	
 	public void addNode(INode n, int pos, boolean val){
+		if(used<bufferSize) used++;
 		modify[pos]=val;
 		dirBuffer[pos]=n.getPosition();
 		loaded[pos]=n;
 	}
 	
+	public int getBufferPos(){
+		return used;
+	}
 	
+	public boolean isFull(){
+		return used==bufferSize;
+	}
 	
 	public boolean updateNode(INode n){
 		for (int i = 0; i < bufferSize; i++) {

@@ -1,5 +1,6 @@
 package rectangles;
 
+
 public class MBR extends AbstractRectangle{
 
 	public MBR(double[] x, double[]y){
@@ -45,6 +46,20 @@ public class MBR extends AbstractRectangle{
 		
 		return r_x[0]>=aux_x[0] && r_x[1]<=aux_x[1]
 				&& r_y[0]>=aux_y[0] && r_y[1]<=aux_y[1];
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof MBR){
+			MBR mbr = (MBR)obj;
+			boolean r = true;
+			r = r && (this.x_coords[0]==mbr.x_coords[0]);
+			r = r && (this.x_coords[1]==mbr.x_coords[1]);
+			r = r && (this.y_coords[0]==mbr.y_coords[0]);
+			r = r && (this.y_coords[1]==mbr.y_coords[1]);
+			return r;
+		}
+		return false;
 	}
 
 
