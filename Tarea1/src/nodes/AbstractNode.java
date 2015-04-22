@@ -123,8 +123,9 @@ public abstract class AbstractNode implements INode{
 			InternalNode newRoot = new InternalNode(children.size(), true, null, RTree.memManager.getNewPosition(), children, childIsLeaf);
 			Pair p = newRoot.getNewMBR();
 			newRoot.parentMBR = p.r;
-			System.out.println(children.get(0));
-			System.out.println(newRoot.parentMBR);
+			//System.out.println(children.get(0).r);
+			//System.out.println(children.get(1).r);
+			//System.out.println(newRoot.parentMBR);
 			/* se debe guardar la raiz en memoria secundaria */
 			t.root = newRoot;
 			RTree.memManager.saveNode(newRoot);

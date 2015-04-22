@@ -28,7 +28,7 @@ public class GUI{
 	
 	public static void main(String[] args) throws IOException {
 		RTree tree = new RTree(2);
-		int n = 6;
+		int n = 20000;
 		ArrayList<MyRectangle> rects = RectangleGenerator.generateRandom(n);
 		for(int i=0; i<n; i++){
 			MyRectangle r = rects.get(i);
