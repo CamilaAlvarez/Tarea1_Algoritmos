@@ -33,22 +33,6 @@ public class Leaf extends AbstractNode{
 		this.constructor(keyNumber,isRoot,parentMBR,filePos,true,false);		
 	}
 	
-//	public Leaf(int t, boolean isRoot, MBR mbr){
-//		maxChildNumber = 2*t;
-//		this.isRoot = isRoot;
-//		this.parentMBR = mbr;
-//		this.rects= new LinkedList<IRectangle>();
-//		this.keyNumber = 0;
-//	}
-//	
-//	public Leaf(int t, boolean isRoot, MBR mbr, LinkedList<IRectangle> rects){
-//		maxChildNumber = 2*t;
-//		this.rects= new LinkedList<IRectangle>(rects);
-//		this.isRoot = isRoot;
-//		this.parentMBR = mbr;
-//		this.keyNumber = rects.size();
-//	}
-	
 	@Override
 	public boolean isLeaf() {
 		return true;

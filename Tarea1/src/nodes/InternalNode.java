@@ -105,40 +105,41 @@ public class InternalNode extends AbstractNode{
 		RectangleContainer aux = insertPlace.insertNoReinsert(r,t);
 		
 		if(aux.p2==null){
-			Pair p1 = aux.p1;
+//			Pair p1 = aux.p1;
+//			for(Pair p : mbrList)
+//				if(p.childPos==p1.childPos){
+//					p.r = p1.r;
+//					break;
+//				}
+//			
+//			Pair p_aux = getNewMBR();
+//			this.parentMBR = p_aux.r;
+//			return new RectangleContainer(p_aux, null, null);
+			return null;
+		}
+		else{
 			for(Pair p : mbrList)
-				if(p.childPos==p1.childPos){
-					p.r = p1.r;
+				if(p.r.equals(aux.r)){
+					mbrList.remove(p);
 					break;
 				}
 			
+			/* se deberia borrar el hijo correpondiente a aux.r del archivo */
+			keyNumber--;
+			
+			if(keyNumber+2>maxChildNumber){
+				return this.split(aux.p1, aux.p2,t);
+				
+			}
+			
+			/* se guardar los dos mbr nuevos */
+			mbrList.add(aux.p1);
+			mbrList.add(aux.p2);
+			keyNumber+=2;
 			Pair p_aux = getNewMBR();
 			this.parentMBR = p_aux.r;
 			return new RectangleContainer(p_aux, null, null);
 		}
-		
-		/* se remueve el mbr anterior */
-		for(Pair p : mbrList)
-			if(p.r.equals(aux.r)){
-				mbrList.remove(p);
-				break;
-			}
-		
-		/* se deberia borrar el hijo correpondiente a aux.r del archivo */
-		keyNumber--;
-		
-		if(keyNumber+2>maxChildNumber){
-			return this.split(aux.p1, aux.p2,t);
-			
-		}
-		
-		/* se guardar los dos mbr nuevos */
-		mbrList.add(aux.p1);
-		mbrList.add(aux.p2);
-		keyNumber+=2;
-		Pair p_aux = getNewMBR();
-		this.parentMBR = p_aux.r;
-		return new RectangleContainer(p_aux, null, null);
 	}
 	
 	public Pair getNewMBR() {
