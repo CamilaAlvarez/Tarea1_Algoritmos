@@ -47,7 +47,6 @@ public class RTree implements IRTree {
 
 	public void draw(LinkedList<DrawRectangle> r) throws IOException {
 		root.draw(r);
-		
 	}
 
 

@@ -531,6 +531,12 @@ public class InternalNode extends AbstractNode{
 			n.draw(r);
 			r.add(new DrawRectangle(x[0], x[1], y[0], y[1], Color.RED));
 		}
+		if(this.isRoot){
+			IRectangle mbr = this.parentMBR;
+			double[] x = mbr.getX();
+			double[] y = mbr.getY();
+			r.add(new DrawRectangle(x[0], x[1], y[0], y[1], Color.GREEN));
+		}
 		
 	}
 
