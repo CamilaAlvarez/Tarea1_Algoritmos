@@ -7,13 +7,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 import rectangles.MyRectangle;
 import trees.RTree;
 
-public class GUI extends JComponent{
+public class GUI{
 	
 	public static void draw(RTree t) throws IOException {
 		JFrame f = new JFrame("Draw");

@@ -1,8 +1,6 @@
 package generator;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 
 import rectangles.MyRectangle;
 

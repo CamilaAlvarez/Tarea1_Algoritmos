@@ -2,7 +2,6 @@ package nodes;
 
 import gui.DrawRectangle;
 
-import java.awt.Color;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
@@ -276,18 +275,18 @@ public class Leaf extends AbstractNode{
 	}
 
 	@Override
-	public void draw(LinkedList<DrawRectangle> rectangles) {
+	public void draw(LinkedList<DrawRectangle> rectangles, int prof) {
 		for(IRectangle r: rects){
 			double[] x = r.getX();
 			double[] y = r.getY();
 			//System.out.println(x[0]+","+ x[1]+","+y[0]+","+y[1]);
-			rectangles.add(new DrawRectangle(x[0], x[1], y[0], y[1], Color.BLUE));
+			rectangles.add(new DrawRectangle(x[0], x[1], y[0], y[1], prof));
 		}
 		if(this.isRoot){
 			IRectangle mbr = this.parentMBR;
 			double[] x = mbr.getX();
 			double[] y = mbr.getY();
-			rectangles.add(new DrawRectangle(x[0], x[1], y[0], y[1], Color.GREEN));
+			rectangles.add(new DrawRectangle(x[0], x[1], y[0], y[1], 0));
 		}
 		
 	}

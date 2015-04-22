@@ -28,6 +28,6 @@ public interface INode{
 	public void setFilePosition(long position);
 	public DeletionPasser borrar(IRectangle r, int height) throws IOException;
 	public Pair getNewMBR();
-	public void draw(LinkedList<DrawRectangle> r) throws IOException;
+	public void draw(LinkedList<DrawRectangle> r, int profundidad) throws IOException;
 
 }

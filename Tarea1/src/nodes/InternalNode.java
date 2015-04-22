@@ -2,7 +2,6 @@ package nodes;
 
 import gui.DrawRectangle;
 
-import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -520,7 +519,7 @@ public class InternalNode extends AbstractNode{
 	}
 
 	@Override
-	public void draw(LinkedList<DrawRectangle> r) throws IOException {
+	public void draw(LinkedList<DrawRectangle> r, int prof) throws IOException {
 		for(Pair p : mbrList){
 			MBR mbr = p.r;
 			double[] x = mbr.getX();
@@ -528,14 +527,14 @@ public class InternalNode extends AbstractNode{
 			//System.out.println("internal mbr");
 			//System.out.println(x[0]+","+ x[1]+","+y[0]+","+y[1]);
 			INode n = RTree.memManager.loadNode(p.childPos);
-			n.draw(r);
-			r.add(new DrawRectangle(x[0], x[1], y[0], y[1], Color.RED));
+			n.draw(r, prof+1);
+			r.add(new DrawRectangle(x[0], x[1], y[0], y[1], prof));
 		}
 		if(this.isRoot){
 			IRectangle mbr = this.parentMBR;
 			double[] x = mbr.getX();
 			double[] y = mbr.getY();
-			r.add(new DrawRectangle(x[0], x[1], y[0], y[1], Color.GREEN));
+			r.add(new DrawRectangle(x[0], x[1], y[0], y[1], 0));
 		}
 		
 	}
