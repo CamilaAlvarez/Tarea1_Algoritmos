@@ -29,7 +29,7 @@ public class GUI extends JComponent{
 	
 	public static void main(String[] args) throws IOException {
 		RTree tree = new RTree(2);
-		ArrayList<MyRectangle> rects = RectangleGenerator.generateRandom(5);
+		ArrayList<MyRectangle> rects = RectangleGenerator.generateRandom(20);
 		for(MyRectangle r : rects){
 			tree.insertar(r);
 			System.out.println("Se inserta: "+r);

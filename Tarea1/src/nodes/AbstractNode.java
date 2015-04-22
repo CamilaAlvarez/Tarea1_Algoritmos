@@ -154,17 +154,6 @@ public abstract class AbstractNode implements INode{
 		
 		pos = parentMBR.writeBuffer(data, pos);		
 		
-//		for (int i = 0; i < numeroNodos; i++) {
-//			getMBRI(i).WriteByte(archivo, pos);
-//			pos += (16*dimension);
-//		}
-//		pos += (maxElem - numeroNodos) * 16 * dimension;
-//		
-//		for (int i = 0; i < numeroNodos; i++) {
-//			ByteBuffer.wrap(archivo, pos, 8).putLong(getArchivoHijo(i));
-//			pos +=8;
-//		}
-//		return null;
 	}
 	
 	@Override
