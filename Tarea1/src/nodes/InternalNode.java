@@ -39,48 +39,7 @@ public class InternalNode extends AbstractNode{
 		this.constructor(keyNumber,isRoot,parentMBR,filePos,false,childIsLeaf);	
 		
 		
-	}
-	
-//	public InternalNode(int t, boolean isRoot){
-//		maxChildNumber = 2*t;
-//		this.isRoot = isRoot;
-//		this.parentMBR = null;
-//		this.mbrList= new LinkedList<Pair>();
-//		this.keyNumber = 0;
-//	}
-//	
-//	public InternalNode(int t, boolean isRoot, MBR mbr){
-//		maxChildNumber = 2*t;
-//		this.isRoot = isRoot;
-//		this.parentMBR = mbr;
-//		this.mbrList= new LinkedList<Pair>();
-//		this.keyNumber = 0;
-//	}
-//	
-//	public InternalNode(int t, boolean isRoot, LinkedList<Pair> pairs){
-//		maxChildNumber = 2*t;
-//		this.isRoot = isRoot;
-//		this.parentMBR = null;
-//		this.mbrList= new LinkedList<Pair>(pairs);
-//		this.keyNumber = mbrList.size();
-//	}
-//	
-//	public InternalNode(int t, boolean isRoot, MBR mbr, LinkedList<Pair> pairs){
-//		maxChildNumber = 2*t;
-//		this.isRoot = isRoot;
-//		this.parentMBR = null;
-//		this.mbrList= new LinkedList<Pair>(pairs);
-//		this.keyNumber = mbrList.size();
-//	}
-	
-	/*protected InternalNode(IRectangle[] elements, String nodeName, int keyNumber,
-			boolean childIsLeaf){
-		this.childIsLeaf = childIsLeaf;
-		NodeTuples = elements;
-		fileName = nodeName;
-		this.keyNumber = keyNumber;
-	}*/
-	
+	}	
 
 	/**
 	 * Permite saber si el nodo es hoja
@@ -101,21 +60,32 @@ public class InternalNode extends AbstractNode{
 	 */
 	@Override
 	public RectangleContainer insertNoReinsert(MyRectangle r, RTree t) throws IOException{
+//		System.out.println("1");
+//		for(Pair p: mbrList){
+//			System.out.println(p.r);
+//		}
 		INode insertPlace = this.obtainInsertNode(r);
+//		System.out.println("obtain");
+//		for(Pair p: mbrList){
+//			System.out.println(p.r);
+//		}
 		RectangleContainer aux = insertPlace.insertNoReinsert(r,t);
+//		System.out.println("insert");
+//		for(Pair p: mbrList){
+//			System.out.println(p.r);
+//		}
 		
 		if(aux.p2==null){
-//			Pair p1 = aux.p1;
-//			for(Pair p : mbrList)
-//				if(p.childPos==p1.childPos){
-//					p.r = p1.r;
-//					break;
-//				}
-//			
-//			Pair p_aux = getNewMBR();
-//			this.parentMBR = p_aux.r;
-//			return new RectangleContainer(p_aux, null, null);
-			return null;
+			Pair p1 = aux.p1;
+			for(Pair p : mbrList)
+				if(p.childPos==p1.childPos){
+					p.r = p1.r;
+					break;
+				}
+			
+			Pair p_aux = getNewMBR();
+			this.parentMBR = p_aux.r;
+			return new RectangleContainer(p_aux, null, null);
 		}
 		else{
 			for(Pair p : mbrList)
@@ -360,11 +330,16 @@ public class InternalNode extends AbstractNode{
 	private INode obtainFromMinOverlap(MyRectangle r) throws IOException {
 		ArrayList<Integer> minMBROverlapIndex = new ArrayList<Integer>();
 		double minOverlapChange = Double.MAX_VALUE;
+//		System.out.println("getOverlapChange");
+//		for(Pair p: mbrList){
+//			System.out.println(p.r);
+//		}
 		for(int i=0 ; i<keyNumber ; i++){
 			double change = this.getOverlapChange(i, r);
 			if(change<minOverlapChange){
 				minOverlapChange = change;
-				minMBROverlapIndex = new ArrayList<Integer>(i);
+				minMBROverlapIndex = new ArrayList<Integer>();
+				minMBROverlapIndex.add(i);
 			}
 			else if(change == minOverlapChange){
 				minMBROverlapIndex.add(i);
@@ -402,17 +377,23 @@ public class InternalNode extends AbstractNode{
 		double[] r_y = r.getY();
 		double[] aux_x = me.getX();
 		double[] aux_y =  me.getY();
+		double[] x = new double[2];
+		double[] y = new double[2];
 		
 		if(r_x[0]<aux_x[0])
-			aux_x[0] = r_x[0];
+			x[0] = r_x[0];
+		else x[0] = aux_x[0];
 		if(r_x[1]>aux_x[1])
-			aux_x[1] = r_x[1];
+			x[1] = r_x[1];
+		else x[1] = aux_x[1];
 		if(r_y[0]<aux_y[0])
-			aux_y[0] = r_y[0];
+			y[0] = r_y[0];
+		else y[0]=aux_y[0];
 		if(r_y[1]>aux_y[1])
-			aux_y[1] = r_y[1];
+			y[1] = r_y[1];
+		else y[1]=aux_y[1];
 		
-		IRectangle aux_rect = new MBR(aux_x,aux_y);
+		IRectangle aux_rect = new MBR(x,y);
 		double new_overlap = 0;
 		for(int j =0; j<keyNumber; j++){
 			if(j==i)
