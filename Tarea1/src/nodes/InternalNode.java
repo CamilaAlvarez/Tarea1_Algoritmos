@@ -59,20 +59,8 @@ public class InternalNode extends AbstractNode{
 	 */
 	@Override
 	public RectangleContainer insertNoReinsert(MyRectangle r, RTree t) throws IOException{
-//		System.out.println("1");
-//		for(Pair p: mbrList){
-//			System.out.println(p.r);
-//		}
 		INode insertPlace = this.obtainInsertNode(r);
-//		System.out.println("obtain");
-//		for(Pair p: mbrList){
-//			System.out.println(p.r);
-//		}
 		RectangleContainer aux = insertPlace.insertNoReinsert(r,t);
-//		System.out.println("insert");
-//		for(Pair p: mbrList){
-//			System.out.println(p.r);
-//		}
 		
 		if(aux.p2==null){
 			Pair p1 = aux.p1;
