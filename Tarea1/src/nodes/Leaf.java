@@ -293,16 +293,16 @@ public class Leaf extends AbstractNode{
 
 	@Override
 	public void draw(LinkedList<DrawRectangle> rectangles) {
-		System.out.println("leaf");
-		//IRectangle mbr = parentMBR;
-		//double[] x1 = mbr.getX();
-		//double[] y1 = mbr.getY();
+		//System.out.println("leaf");
+		IRectangle mbr = parentMBR;
+		double[] x1 = mbr.getX();
+		double[] y1 = mbr.getY();
 		//System.out.println(x1[0]+","+ x1[1]+","+y1[0]+","+y1[1]);
-		//rectangles.add(new DrawRectangle(x1[0], x1[1], y1[0], y1[1], Color.RED));
+		//rectangles.add(new DrawRectangle(x1[0], x1[1], y1[0], y1[1], Color.BLACK));
 		for(IRectangle r: rects){
 			double[] x = r.getX();
 			double[] y = r.getY();
-			System.out.println(x[0]+","+ x[1]+","+y[0]+","+y[1]);
+			//System.out.println(x[0]+","+ x[1]+","+y[0]+","+y[1]);
 			rectangles.add(new DrawRectangle(x[0], x[1], y[0], y[1], Color.BLUE));
 		}
 		

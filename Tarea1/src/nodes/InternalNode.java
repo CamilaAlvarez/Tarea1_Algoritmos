@@ -549,8 +549,8 @@ public class InternalNode extends AbstractNode{
 			MBR mbr = p.r;
 			double[] x = mbr.getX();
 			double[] y = mbr.getY();
-			System.out.println("internal mbr");
-			System.out.println(x[0]+","+ x[1]+","+y[0]+","+y[1]);
+			//System.out.println("internal mbr");
+			//System.out.println(x[0]+","+ x[1]+","+y[0]+","+y[1]);
 			INode n = RTree.memManager.loadNode(p.childPos);
 			n.draw(r);
 			r.add(new DrawRectangle(x[0], x[1], y[0], y[1], Color.RED));

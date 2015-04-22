@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
+import rectangles.IRectangle;
 import rectangles.MyRectangle;
 import trees.RTree;
 
@@ -29,13 +30,18 @@ public class GUI extends JComponent{
 	
 	public static void main(String[] args) throws IOException {
 		RTree tree = new RTree(2);
-		ArrayList<MyRectangle> rects = RectangleGenerator.generateRandom(5);
-		for(MyRectangle r : rects){
+		int n = 6;
+		ArrayList<MyRectangle> rects = RectangleGenerator.generateRandom(n);
+		for(int i = 0; i<n; i++){
+			MyRectangle r = rects.get(i);
 			tree.insertar(r);
-			System.out.println("Se inserta: "+r);
+			//System.out.println("Se inserta: "+r);
 			//System.out.println("En arbol: "+tree.root);
+			if(i == n-2){
+				GUI.draw(tree);
+			}
 		}
-		System.out.println(tree.root.isLeaf());
+		//System.out.println(tree.root.isLeaf());
 		GUI.draw(tree);
 	}
 	
