@@ -74,6 +74,7 @@ public class InternalNode extends AbstractNode{
 			this.parentMBR = p_aux.r;
 			return new RectangleContainer(p_aux, null, null);
 		}
+		
 		else{
 			for(Pair p : mbrList)
 				if(p.r.equals(aux.r)){
@@ -114,7 +115,7 @@ public class InternalNode extends AbstractNode{
 			if(y[1]>maxY) maxY=y[1];
 		}
 		double[] newX = {minX, maxX};
-		double[] newY = {minY, minY};
+		double[] newY = {minY, maxY};
 		return new Pair(new MBR(newX, newY), this.getPosition());
 
 	}
@@ -317,10 +318,7 @@ public class InternalNode extends AbstractNode{
 	private INode obtainFromMinOverlap(MyRectangle r) throws IOException {
 		ArrayList<Integer> minMBROverlapIndex = new ArrayList<Integer>();
 		double minOverlapChange = Double.MAX_VALUE;
-//		System.out.println("getOverlapChange");
-//		for(Pair p: mbrList){
-//			System.out.println(p.r);
-//		}
+
 		for(int i=0 ; i<keyNumber ; i++){
 			double change = this.getOverlapChange(i, r);
 			if(change<minOverlapChange){
@@ -401,7 +399,6 @@ public class InternalNode extends AbstractNode{
 		double minAreaChange = Double.MAX_VALUE;
 		MBR rect;
 		ArrayList<Integer> minMBRIndex = new ArrayList<Integer>();
-		System.out.println(keyNumber);
 		for(int i =0; i< keyNumber; i++){
 			rect = mbrList.get(i).r;
 			double change = rect.getAreaChange(r);
@@ -512,8 +509,6 @@ public class InternalNode extends AbstractNode{
 			MBR mbr = p.r;
 			double[] x = mbr.getX();
 			double[] y = mbr.getY();
-			//System.out.println("internal mbr");
-			//System.out.println(x[0]+","+ x[1]+","+y[0]+","+y[1]);
 			INode n = RTree.memManager.loadNode(p.childPos);
 			n.draw(r, prof+1);
 			r.add(new DrawRectangle(x[0], x[1], y[0], y[1], prof));

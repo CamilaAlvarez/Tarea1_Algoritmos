@@ -241,7 +241,7 @@ public class Leaf extends AbstractNode{
 		RTree.memManager.saveNode(n2);
 		LinkedList<Pair> ret = new LinkedList<Pair>();
 		ret.add(new Pair(vals[0],n1.getPosition()));
-		ret.add( new Pair(vals[1],n2.getPosition()));
+		ret.add(new Pair(vals[1],n2.getPosition()));
 		return ret;
 	}
 
