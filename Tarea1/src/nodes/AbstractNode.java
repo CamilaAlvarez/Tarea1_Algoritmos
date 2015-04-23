@@ -182,7 +182,7 @@ public abstract class AbstractNode implements INode{
 
 	public DeletionPasser condensar(DeletionPasser d, int height) {
 		if(this.isRoot())/*reinsertar*/
-			this.ReinsertDeletedNodes(d);
+			this.ReinsertDeletedNodes(d,this);
 		if(this.keyNumber<RTree.t){
 			d.deletedNodes.push(new DeletionTriplet(this, this.getPosition(),height));
 			d.needToRemove=true;
@@ -194,8 +194,23 @@ public abstract class AbstractNode implements INode{
 		return d;
 	}
 
-	protected void ReinsertDeletedNodes(DeletionPasser d) {
-		// TODO Auto-generated method stub
+	protected void ReinsertDeletedNodes(DeletionPasser d, INode root) {
+		LinkedList<Pair> mbrs;
+		LinkedList<IRectangle> rect;
+		for(DeletionTriplet del : d.deletedNodes){
+			INode node = del.node;
+			int height = del.nodeHeight;
+			if(node.isLeaf()){
+				rect = ((Leaf)node).getRects();
+				for(IRectangle r : rect){
+					root.insert(r);
+				}
+			}
+			else
+				mbrs = ((InternalNode)node).getRects();
+				
+				
+		}
 		
 	}
 

@@ -42,7 +42,7 @@ public class RTree implements IRTree {
 	}
 	
 	private void borrar(MyRectangle r) throws IOException{
-		root.borrar(r, 0);
+		root.borrar(r, 0, root);
 	}
 
 	public void draw(LinkedList<DrawRectangle> r) throws IOException {
