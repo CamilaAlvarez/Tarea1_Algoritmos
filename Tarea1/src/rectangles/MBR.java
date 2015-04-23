@@ -17,8 +17,8 @@ public class MBR extends AbstractRectangle{
 		double area = this.getArea();
 		double[] r_x = r.getX();
 		double[] r_y = r.getY();
-		double[] aux_x = this.x_coords;
-		double[] aux_y = this.y_coords;
+		double[] aux_x = {this.x_coords[0], this.x_coords[1]};
+		double[] aux_y = {this.y_coords[0], this.y_coords[1]};
 		
 		if(r_x[0]<aux_x[0])
 			aux_x[0] = r_x[0];

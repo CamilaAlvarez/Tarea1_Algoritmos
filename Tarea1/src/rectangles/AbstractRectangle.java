@@ -79,7 +79,7 @@ public abstract class AbstractRectangle implements IRectangle{
 		if(r_y[1]<aux_y[1])
 			auxY[1]=r_y[1];
 		
-		return (Math.max(0D, auxX[1]-auxX[0])*(auxY[1]-auxY[0]));
+		return (Math.max(0D, (auxX[1]-auxX[0])*(auxY[1]-auxY[0])));
 		
 	}
 	
