@@ -40,6 +40,10 @@ public class InternalNode extends AbstractNode{
 		
 	}	
 
+	public LinkedList<Pair> getRects(){
+		return mbrList;
+	}
+	
 	/**
 	 * Permite saber si el nodo es hoja
 	 */
@@ -157,8 +161,12 @@ public class InternalNode extends AbstractNode{
 		double min_margin = Math.min(min_margin0, min_margin1);
 		
 		LinkedList<Pair> children;
-		if(min_margin==margenX_0 || min_margin==margenX_1)
+		if(min_margin==margenX_0)
 			children = getNewChildren(aux_list, new PairComparatorX(0),m, end);
+		else if(min_margin==margenX_1)
+			children = getNewChildren(aux_list, new PairComparatorX(1),m, end);
+		else if(min_margin==margenY_1)
+			children = getNewChildren(aux_list, new PairComparatorY(1),m, end);
 		else 
 			children = getNewChildren(aux_list, new PairComparatorY(0),m, end);
 		
@@ -464,33 +472,24 @@ public class InternalNode extends AbstractNode{
 
 	/* Altura desde raiz(h=0) a hojas, esto por simplicidad */
 	@Override
-	public DeletionPasser borrar(IRectangle r, int height) throws IOException {
+	public DeletionPasser borrar(IRectangle r, int height, INode root) throws IOException {
 		DeletionPasser d = null;
 		for(Pair p : mbrList){
 			if(p.r.contains(r)){
 				INode n = RTree.memManager.loadNode(p.childPos);
-				d = n.borrar(r, height+1);
+				d = n.borrar(r, height+1, root);
 				if(d!=null)
 					break;
 			}
 		}
 		
 		if(d!=null){
-			if(d.newMBRPair!=null){
-				/*Actualizar MBR */
-				for(Pair p : mbrList)
-					if(p.childPos==d.newMBRPair.childPos){
-						p.r=d.newMBRPair.r;
-						break;
-					}
-				return null;
-			}
 			/*que pasa si el anterior no termino con underflow? => no voy
 			 * a entrar al if nunca, y si termino con underflow, el nodo a retirar queda
 			 * arriba*/
 			if(d.needToRemove){
 				for(Pair p : mbrList)
-					if(p.childPos==d.deletedNodes.peekFirst().childPos){
+					if(p.childPos==d.deletedNodes.peekFirst().myPos){
 						mbrList.remove(p);
 						break;
 					}
@@ -498,6 +497,18 @@ public class InternalNode extends AbstractNode{
 				d.needToRemove=false;
 				return this.condensar(d,height);
 			}
+			
+			/*Actualizar MBR */
+			for(Pair p : mbrList)
+				if(p.childPos==d.newMBRPair.childPos){
+					p.r=d.newMBRPair.r;
+					break;
+				}
+			Pair p = this.getNewMBR();
+			d.setMBRPair(p);
+			return d;
+		
+			
 		}
 		
 		return null;

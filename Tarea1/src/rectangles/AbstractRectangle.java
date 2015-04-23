@@ -43,22 +43,6 @@ public abstract class AbstractRectangle implements IRectangle{
 	 */
 	@Override
 	public double intersectionArea(IRectangle r){
-		
-//		Rectangle2D r1 = new Rectangle2D.Double(this.x_coords[0],this.y_coords[1],
-//				Math.abs(this.x_coords[1]-this.x_coords[0]), 
-//				Math.abs(this.y_coords[1]-this.y_coords[0]));
-//		
-//		Rectangle2D r2 = new Rectangle2D.Double(r.getX()[0],r.getY()[1],
-//				Math.abs(r.getX()[1]-r.getX()[0]), 
-//				Math.abs(r.getY()[1]-r.getY()[0]));
-//		
-//		Rectangle2D inter = r1.createIntersection(r2);
-//
-//		double w = inter.getWidth();
-//		double h = inter.getHeight();
-//		
-//		return Math.abs(w*h);
-		
 		double[] r_x = r.getX();
 		double[] r_y = r.getY();
 		double[] aux_x = this.x_coords;
@@ -79,7 +63,7 @@ public abstract class AbstractRectangle implements IRectangle{
 		if(r_y[1]<aux_y[1])
 			auxY[1]=r_y[1];
 		
-		return (Math.max(0D, auxX[1]-auxX[0])*(auxY[1]-auxY[0]));
+		return (Math.max(0D, (auxX[1]-auxX[0])*(auxY[1]-auxY[0])));
 		
 	}
 	

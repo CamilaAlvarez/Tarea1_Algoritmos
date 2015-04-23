@@ -32,6 +32,10 @@ public class Leaf extends AbstractNode{
 		this.constructor(keyNumber,isRoot,parentMBR,filePos,true,false);		
 	}
 	
+	public LinkedList<IRectangle> getRects(){
+		return rects;
+	}
+	
 	@Override
 	public boolean isLeaf() {
 		return true;
@@ -265,8 +269,8 @@ public class Leaf extends AbstractNode{
 	}
 
 	@Override
-	public DeletionPasser borrar(IRectangle r, int height) throws IOException {
-		if(rects.contains(r)){
+	public DeletionPasser borrar(IRectangle r, int height, INode root) throws IOException {
+		if(rects.contains(r)){ /* TODO ver si funciona */
 			rects.remove(r);
 			DeletionPasser d = new DeletionPasser();
 			return this.condensar(d, height);
