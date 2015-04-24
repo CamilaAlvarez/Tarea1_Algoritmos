@@ -3,6 +3,7 @@ package nodes;
 import gui.DrawRectangle;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import rectangles.IRectangle;
@@ -29,7 +30,8 @@ public interface INode{
 	public DeletionPasser borrar(IRectangle r, int height, INode root) throws IOException;
 	public Pair getNewMBR();
 	public void draw(LinkedList<DrawRectangle> r, int profundidad) throws IOException;
-	public RectangleContainer insertReinsert(IRectangle r);
+	public RectangleContainer insertReinsert(IRectangle r, RTree t, HashMap<Integer, Integer> dict, int height) throws IOException;
 	public RectangleContainer insertInHeight(Pair r, int height);
+	public void reinsert(IRectangle r, RTree t, HashMap<Integer,Integer> dict, int height);
 
 }

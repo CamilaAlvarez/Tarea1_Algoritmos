@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Set;
 
+import Point.Point;
+
+import rectangles.DistanceComparator;
 import rectangles.IRectangle;
 import rectangles.MBR;
 import rectangles.MyRectangle;
@@ -306,9 +309,36 @@ public class Leaf extends AbstractNode{
 	}
 
 	@Override
-	public RectangleContainer insertReinsert(IRectangle r) {
-		// TODO Auto-generated method stub
-		return null;
+	public RectangleContainer insertReinsert(IRectangle r, RTree t, HashMap<Integer,Integer> dict, int height) throws IOException {
+		Pair p1;
+		if(this.keyNumber>=maxChildNumber){
+			if(dict.get((Integer)height)==null && !this.isRoot){
+				this.reinsert(r,t,dict,height);
+			}
+			return this.split(r,t);
+		}
+		else{
+			rects.add(r);
+			this.addKey();
+			p1 = getNewMBR();
+			this.parentMBR = p1.r;
+			/* TODO guardar nodo */
+		}
+		return new RectangleContainer(p1, null, null);
+	}
+
+	public void reinsert(IRectangle r, RTree t, HashMap<Integer,Integer> dict, int h) {
+		LinkedList<IRectangle> aux_rects = new LinkedList<IRectangle>(rects);
+		aux_rects.add(r);
+		
+		Point p = this.parentMBR.getCenter();
+		DistanceComparator comp = new DistanceComparator(p);
+		Collections.sort(aux_rects, comp);
+		
+		//TODO remover las p primeras entradas e insertarlas de nuevo a la altura dada
+		
+		
+		
 	}
 
 	@Override

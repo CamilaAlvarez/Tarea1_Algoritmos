@@ -3,6 +3,7 @@ package trees;
 import gui.DrawRectangle;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import memory.IMemoryManager;
@@ -47,6 +48,13 @@ public class RTree implements IRTree {
 
 	public void draw(LinkedList<DrawRectangle> r) throws IOException {
 		root.draw(r,1);
+	}
+
+	@Override
+	public void insertar2(MyRectangle r) throws IOException {
+		HashMap<Integer, Integer> dict = new HashMap<Integer, Integer>();
+		root.insertReinsert(r,this,dict,1);
+		
 	}
 
 

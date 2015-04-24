@@ -1,5 +1,7 @@
 package rectangles;
 
+import Point.Point;
+
 public interface IRectangle {
 
 	double getArea();
@@ -13,6 +15,8 @@ public interface IRectangle {
 	double intersectionArea(IRectangle iRectangle);
 	
 	int writeBuffer(byte[] data, int pos);
+	
+	Point getCenter();
 
 
 }

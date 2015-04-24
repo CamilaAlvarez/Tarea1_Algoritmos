@@ -2,6 +2,8 @@ package rectangles;
 
 import java.nio.ByteBuffer;
 
+import Point.Point;
+
 public abstract class AbstractRectangle implements IRectangle{
 	protected double[] x_coords;
 	protected double[] y_coords;
@@ -85,5 +87,12 @@ public abstract class AbstractRectangle implements IRectangle{
 		
 		return pos;
 		
+	}
+	
+	@Override
+	public Point getCenter(){
+		double x = (this.x_coords[0]+this.x_coords[1])/2;
+		double y = (this.y_coords[0]+this.y_coords[1])/2;
+		return new Point(x,y);
 	}
 }
