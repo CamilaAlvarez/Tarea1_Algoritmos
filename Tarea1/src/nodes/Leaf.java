@@ -56,6 +56,7 @@ public class Leaf extends AbstractNode{
 			this.addKey();
 			p1 = getNewMBR();
 			this.parentMBR = p1.r;
+			/* TODO guardar nodo */
 		}
 		return new RectangleContainer(p1, null, null);
 		

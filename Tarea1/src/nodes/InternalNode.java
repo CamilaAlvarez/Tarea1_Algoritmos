@@ -76,6 +76,7 @@ public class InternalNode extends AbstractNode{
 			
 			Pair p_aux = getNewMBR();
 			this.parentMBR = p_aux.r;
+			/* TODO guardar nodo */
 			return new RectangleContainer(p_aux, null, null);
 		}
 		
@@ -94,12 +95,13 @@ public class InternalNode extends AbstractNode{
 				
 			}
 			
-			/* se guardar los dos mbr nuevos */
+			/* se guardan los dos mbr nuevos */
 			mbrList.add(aux.p1);
 			mbrList.add(aux.p2);
 			keyNumber+=2;
 			Pair p_aux = getNewMBR();
 			this.parentMBR = p_aux.r;
+			/* TODO guardar nodo */
 			return new RectangleContainer(p_aux, null, null);
 		}
 	}
