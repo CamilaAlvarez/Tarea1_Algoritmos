@@ -445,10 +445,9 @@ public class InternalNode extends AbstractNode{
 	 * Busca un rectangulo en el nodo
 	 * @throws IOException 
 	 */
-	/* Arregalr esto */
 	@Override 
-	public boolean buscar(MyRectangle r) throws IOException {
-		boolean res=false;
+	public LinkedList<IRectangle> buscar(MyRectangle r) throws IOException {
+		LinkedList<IRectangle> res = new LinkedList<IRectangle>();
 		MBR rect;
 		for(int i = 0; i<keyNumber; i++){
 			rect = mbrList.get(i).r;
@@ -456,9 +455,8 @@ public class InternalNode extends AbstractNode{
 				continue;
 			Pair p = mbrList.get(i);
 			INode n = RTree.memManager.loadNode(p.childPos);
-			res = n.buscar(r);
-			if(res)
-				return true;
+			LinkedList<IRectangle> inter_rects = n.buscar(r);
+			res.addAll(inter_rects);
 		}
 		return res;
 	}

@@ -254,12 +254,13 @@ public class Leaf extends AbstractNode{
 	 * Busca rectangulo r en la hoja
 	 */
 	@Override
-	public boolean buscar(MyRectangle r) {
+	public LinkedList<IRectangle> buscar(MyRectangle r) {
+		LinkedList<IRectangle> res = new LinkedList<IRectangle>();
 		for(IRectangle rect : rects){
-			if(rect.equals(r))
-				return true;
+			if(rect.intersectionArea(r)!=0)
+				res.add(r);
 		}
-		return false;
+		return res;
 	}
 
 	@Override
