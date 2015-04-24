@@ -36,7 +36,7 @@ public class RTree implements IRTree {
 	}
 	
 	@Override
-	public boolean buscar(MyRectangle r) throws IOException {
+	public LinkedList<IRectangle> buscar(MyRectangle r) throws IOException {
 		return root.buscar(r);
 		
 	}

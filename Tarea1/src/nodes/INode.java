@@ -29,5 +29,7 @@ public interface INode{
 	public DeletionPasser borrar(IRectangle r, int height, INode root) throws IOException;
 	public Pair getNewMBR();
 	public void draw(LinkedList<DrawRectangle> r, int profundidad) throws IOException;
+	public RectangleContainer insertReinsert(IRectangle r);
+	public RectangleContainer insertInHeight(Pair r, int height);
 
 }

@@ -200,13 +200,15 @@ public abstract class AbstractNode implements INode{
 			if(node.isLeaf()){
 				rect = ((Leaf)node).getRects();
 				for(IRectangle r : rect){
-					root.insert(r);
+					root.insertReinsert(r);
 				}
 			}
-			else
+			else{
 				mbrs = ((InternalNode)node).getRects();
-				
-				
+				for(Pair r : mbrs){
+					root.insertInHeight(r,height);
+				}
+			}	
 		}
 		
 	}

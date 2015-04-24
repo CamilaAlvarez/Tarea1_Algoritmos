@@ -150,7 +150,7 @@ public class InternalNode extends AbstractNode{
 			aux_rects.add(p.r);
 		
 		int m = 4*(2*RTree.t)/10;
-		int end = 2*RTree.t + 1 -m;
+		int end = 2*RTree.t + 2 -2*m;
 		
 		double margenX_0 = this.margen(aux_rects, new RectangleComparatorX(0),m, end);
 		double margenY_0 = this.margen(aux_rects, new RectangleComparatorY(0),m, end);
@@ -531,6 +531,18 @@ public class InternalNode extends AbstractNode{
 			r.add(new DrawRectangle(x[0], x[1], y[0], y[1], 0));
 		}
 		
+	}
+
+	@Override
+	public RectangleContainer insertReinsert(IRectangle r) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public RectangleContainer insertInHeight(Pair r, int height) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	
