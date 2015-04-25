@@ -19,14 +19,14 @@ import utils.RectangleContainer;
 
 public class RTree implements IRTree {
 	public static int t;
-	public static int p;
+	public static long p;
 	public static IMemoryManager memManager;	
 	public INode root;
 	
 	public RTree(int t) throws IOException{
 		// true indica que se es raiz
 		RTree.t= t;
-		RTree.p = 30;
+		RTree.p = Math.round(2*t*0.3);
 		double[] x = {0,0};
 		double[] y = {0,0};
 
@@ -43,16 +43,7 @@ public class RTree implements IRTree {
 	public void insertar(MyRectangle r) throws IOException {
 		RectangleContainer c = root.insertNoReinsert(r,this);
 		if (c.p2!=null){
-			LinkedList<Pair> children = new LinkedList<Pair>();
-			children.add(c.p1);
-			children.add(c.p2);
-			boolean b = root.isLeaf();
-			InternalNode newRoot = new InternalNode(2, true, null, RTree.memManager.getNewPosition(), children, b);
-			Pair p = newRoot.getNewMBR();
-			newRoot.setParentMBR(p.r);
-			/* se debe guardar la raiz en memoria secundaria */
-			this.root = newRoot;
-			RTree.memManager.saveNode(newRoot);
+			createNewRoot(c);
 		}
 		
 	}
@@ -63,7 +54,7 @@ public class RTree implements IRTree {
 		
 	}
 	
-	private void borrar(MyRectangle r) throws IOException{
+	public void borrar(MyRectangle r) throws IOException{
 		root.borrar(r, 0, root);
 	}
 
@@ -72,12 +63,43 @@ public class RTree implements IRTree {
 	}
 
 	@Override
-	public void insertar2(MyRectangle r) throws IOException {
+	public void insertWithReinsert(MyRectangle r) throws IOException {
 		HashMap<Integer, Integer> dict = new HashMap<Integer, Integer>();
-		root.insertReinsert(r,this,dict,1);
+		
+		MBR mbr = new MBR(r.getX(), r.getY());
+		Pair pair = new Pair(mbr, -1L); 
+		insertar2(pair, dict, 0);
 		
 	}
-
-
+	public void insertar2(Pair r, HashMap<Integer, Integer> dict, int target) throws IOException{
+		LinkedList<Pair> toReinsert = new LinkedList<Pair>();
+		Integer h = new Integer(0);
+		RectangleContainer c = root.insertInHeight(r, dict, 1, target, toReinsert, h);
+		//Ocurrió un split
+		if (c.p2!=null){
+			System.out.println("split");
+			createNewRoot(c);
+		}
+		//Ocurrió un reinsert
+		if(!toReinsert.isEmpty()){
+			System.out.println(toReinsert.size());
+			for(Pair p : toReinsert){
+				insertar2(p,dict,h.intValue());
+			}
+		}
+	}
+	
+	private void createNewRoot(RectangleContainer c) throws IOException{
+		LinkedList<Pair> children = new LinkedList<Pair>();
+		children.add(c.p1);
+		children.add(c.p2);
+		boolean b = root.isLeaf();
+		InternalNode newRoot = new InternalNode(2, true, null, RTree.memManager.getNewPosition(), children, b);
+		Pair p = newRoot.getNewMBR();
+		newRoot.setParentMBR(p.r);
+		/* se debe guardar la raiz en memoria secundaria */
+		this.root = newRoot;
+		RTree.memManager.saveNode(newRoot);
+	}
 
 }

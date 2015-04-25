@@ -534,8 +534,7 @@ public class InternalNode extends AbstractNode{
 	}
 
 	@Override
-	public RectangleContainer insertReinsert(IRectangle r, RTree t,
-			HashMap<Integer, Integer> dict, int height) throws IOException {
+	public LinkedList<Pair> reinsert(Pair r, HashMap<Integer, Integer> dict) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -543,13 +542,7 @@ public class InternalNode extends AbstractNode{
 	@Override
 	public RectangleContainer insertInHeight(Pair pair,
 			HashMap<Integer, Integer> dict, int target, int current,
-			LinkedList<Pair> toReinsert) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public LinkedList<Pair> reinsert(Pair r, HashMap<Integer, Integer> dict) {
+			LinkedList<Pair> toReinsert, Integer h) throws IOException {
 		// TODO Auto-generated method stub
 		return null;
 	}

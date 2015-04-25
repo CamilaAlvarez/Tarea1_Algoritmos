@@ -31,9 +31,19 @@ public interface INode{
 	public DeletionPasser borrar(IRectangle r, int height, INode root) throws IOException;
 	public Pair getNewMBR();
 	public void draw(LinkedList<DrawRectangle> r, int profundidad) throws IOException;
-	public RectangleContainer insertReinsert(IRectangle r, RTree t, HashMap<Integer, Integer> dict, int height) throws IOException;
+	/**
+	 * Inserta un rectángulo (o mbr) con restricción de altura
+	 * @param pair objeto a insertar
+	 * @param dict diccionario para determinar si se usa reinsert o split
+	 * @param target altura ojetivo en donde insertar
+	 * @param current altura actual en donde se esta insertando
+	 * @param toReinsert Lista en donde agregar rectangulos a reinsertar
+	 * @param h Integer en donde guardar la altura objetivo en caso de reinsertar
+	 * @return contenedor con los pares en caso de split
+	 * @throws IOException
+	 */
 	public RectangleContainer insertInHeight(Pair pair, HashMap<Integer,Integer> dict, int target, int current,
-			LinkedList<Pair> toReinsert) throws IOException;
+			LinkedList<Pair> toReinsert, Integer h) throws IOException;
 	LinkedList<Pair> reinsert(Pair r, HashMap<Integer,Integer> dict);
 
 }
