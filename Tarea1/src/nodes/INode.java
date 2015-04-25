@@ -20,6 +20,7 @@ import utils.RectangleContainer;
  */
 public interface INode{
 	
+	public void setParentMBR(IRectangle parentMBR);
 	public boolean isLeaf();
 	public RectangleContainer insertNoReinsert(MyRectangle r, RTree rTree) throws IOException;
 	public LinkedList<IRectangle> buscar(MyRectangle r) throws IOException;
@@ -31,7 +32,8 @@ public interface INode{
 	public Pair getNewMBR();
 	public void draw(LinkedList<DrawRectangle> r, int profundidad) throws IOException;
 	public RectangleContainer insertReinsert(IRectangle r, RTree t, HashMap<Integer, Integer> dict, int height) throws IOException;
-	public RectangleContainer insertInHeight(Pair r, int height);
-	public void reinsert(IRectangle r, RTree t, HashMap<Integer,Integer> dict, int height);
+	public RectangleContainer insertInHeight(Pair pair, HashMap<Integer,Integer> dict, int target, int current,
+			LinkedList<Pair> toReinsert) throws IOException;
+	LinkedList<Pair> reinsert(Pair r, HashMap<Integer,Integer> dict);
 
 }

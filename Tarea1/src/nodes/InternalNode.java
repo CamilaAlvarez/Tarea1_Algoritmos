@@ -140,7 +140,7 @@ public class InternalNode extends AbstractNode{
 		aux_list.add(p1);
 		aux_list.add(p2);
 		LinkedList<Pair> children = generateSplit(aux_list);
-		return generalSplit(children, t,false); 
+		return generalSplit(children); 
 		
 	}
 	
@@ -534,12 +534,6 @@ public class InternalNode extends AbstractNode{
 	}
 
 	@Override
-	public RectangleContainer insertInHeight(Pair r, int height) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public RectangleContainer insertReinsert(IRectangle r, RTree t,
 			HashMap<Integer, Integer> dict, int height) throws IOException {
 		// TODO Auto-generated method stub
@@ -547,11 +541,20 @@ public class InternalNode extends AbstractNode{
 	}
 
 	@Override
-	public void reinsert(IRectangle r, RTree t, HashMap<Integer, Integer> dict,
-			int height) {
+	public RectangleContainer insertInHeight(Pair pair,
+			HashMap<Integer, Integer> dict, int target, int current,
+			LinkedList<Pair> toReinsert) throws IOException {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
+
+	@Override
+	public LinkedList<Pair> reinsert(Pair r, HashMap<Integer, Integer> dict) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 
 	
 }

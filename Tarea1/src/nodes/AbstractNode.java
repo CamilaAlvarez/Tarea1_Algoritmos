@@ -18,7 +18,15 @@ public abstract class AbstractNode implements INode{
 	protected int keyNumber;
 	protected boolean isRoot;
 	protected int maxChildNumber;
-	protected IRectangle parentMBR;
+	public IRectangle parentMBR;
+	public IRectangle getParentMBR() {
+		return parentMBR;
+	}
+
+	public void setParentMBR(IRectangle parentMBR) {
+		this.parentMBR = parentMBR;
+	}
+
 	protected long filePos;
 	protected boolean isLeaf;
 	protected boolean childIsLeaf;
@@ -38,6 +46,7 @@ public abstract class AbstractNode implements INode{
 	/**
 	 * Aumenta la variable de numero de llaves en 1
 	 */
+	
 	public void addKey(){
 		keyNumber++;
 	}
@@ -117,18 +126,18 @@ public abstract class AbstractNode implements INode{
 		return margen;
 	}
 	
-	protected RectangleContainer generalSplit(LinkedList<Pair> children, RTree t, boolean childIsLeaf) throws IOException{
-		if(this.isRoot){
-			this.isRoot=false;
-			InternalNode newRoot = new InternalNode(children.size(), true, null, RTree.memManager.getNewPosition(), children, childIsLeaf);
-			Pair p = newRoot.getNewMBR();
-			newRoot.parentMBR = p.r;
-			/* se debe guardar la raiz en memoria secundaria */
-			t.root = newRoot;
-			RTree.memManager.saveNode(newRoot);
-			
-			return null;
-		}
+	protected RectangleContainer generalSplit(LinkedList<Pair> children) throws IOException{
+//		if(this.isRoot){
+//			this.isRoot=false;
+//			InternalNode newRoot = new InternalNode(children.size(), true, null, RTree.memManager.getNewPosition(), children, childIsLeaf);
+//			Pair p = newRoot.getNewMBR();
+//			newRoot.parentMBR = p.r;
+//			/* se debe guardar la raiz en memoria secundaria */
+//			t.root = newRoot;
+//			RTree.memManager.saveNode(newRoot);
+//			
+//			return null;
+//		}
 		Pair p_1, p_2;
 		p_1 = children.getFirst();
 		p_2 = children.getLast();
@@ -200,13 +209,13 @@ public abstract class AbstractNode implements INode{
 			if(node.isLeaf()){
 				rect = ((Leaf)node).getRects();
 				for(IRectangle r : rect){
-					root.insertReinsert(r);
+					//root.insertReinsert(r);
 				}
 			}
 			else{
 				mbrs = ((InternalNode)node).getRects();
 				for(Pair r : mbrs){
-					root.insertInHeight(r,height);
+					//root.insertInHeight(r,height);
 				}
 			}	
 		}

@@ -4,6 +4,11 @@ import java.util.Comparator;
 
 import Point.Point;
 
+/**
+ * Ordena de mayor a menor
+ * @author Agustin
+ *
+ */
 public class DistanceComparator implements Comparator<IRectangle>{
 	
 	private Point center;
@@ -18,10 +23,10 @@ public class DistanceComparator implements Comparator<IRectangle>{
 		Point c1 = r1.getCenter();
 		double d0 = center.distance(c0);
 		double d1 = center.distance(c1);
-		if(d0>d1){
+		if(d0<d1){
 			return 1;
 		}
-		else if(d0<d1){
+		else if(d0>d1){
 			return -1;
 		}
 		return 0;

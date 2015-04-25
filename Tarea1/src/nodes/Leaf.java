@@ -52,7 +52,7 @@ public class Leaf extends AbstractNode{
 	public RectangleContainer insertNoReinsert(MyRectangle r, RTree t) throws IOException {
 		Pair p1;
 		if(this.keyNumber>=maxChildNumber){
-			return this.split(r,t);
+			return this.split(r);
 		}
 		else{
 			rects.add(r);
@@ -91,10 +91,10 @@ public class Leaf extends AbstractNode{
 	 * y el viejo MBR que será eliminado
 	 * @throws IOException 
 	 */
-	private RectangleContainer split(IRectangle r, RTree t) throws IOException {
+	private RectangleContainer split(IRectangle r) throws IOException {
 		LinkedList<Pair> children = generateSplit(r);
 		
-		return generalSplit(children, t, true);
+		return generalSplit(children);
 	}
 	
 	private LinkedList<Pair> generateSplit(IRectangle r) throws IOException{
@@ -310,41 +310,57 @@ public class Leaf extends AbstractNode{
 
 	@Override
 	public RectangleContainer insertReinsert(IRectangle r, RTree t, HashMap<Integer,Integer> dict, int height) throws IOException {
-		Pair p1;
-		if(this.keyNumber>=maxChildNumber){
-			if(dict.get((Integer)height)==null && !this.isRoot){
-				this.reinsert(r,t,dict,height);
-			}
-			return this.split(r,t);
-		}
-		else{
-			rects.add(r);
-			this.addKey();
-			p1 = getNewMBR();
-			this.parentMBR = p1.r;
-			/* TODO guardar nodo */
-		}
-		return new RectangleContainer(p1, null, null);
+		return null;
 	}
 
-	public void reinsert(IRectangle r, RTree t, HashMap<Integer,Integer> dict, int h) {
+	public LinkedList<Pair> reinsert(Pair r, HashMap<Integer,Integer> dict) {
 		LinkedList<IRectangle> aux_rects = new LinkedList<IRectangle>(rects);
-		aux_rects.add(r);
+		aux_rects.add(r.r);
 		
 		Point p = this.parentMBR.getCenter();
 		DistanceComparator comp = new DistanceComparator(p);
 		Collections.sort(aux_rects, comp);
+		int cant = RTree.p;
 		
-		//TODO remover las p primeras entradas e insertarlas de nuevo a la altura dada
+		LinkedList<Pair> removed = new LinkedList<Pair>();
+		
+		for(int i = 0; i<cant; i++){
+			IRectangle rect = aux_rects.remove();
+			MBR mbr = new MBR(rect.getX(), rect.getY());
+			removed.add(new Pair(mbr, -1L));
+		}
+		
+		this.rects = aux_rects;
+		Pair p1 = this.getNewMBR();
+		this.parentMBR=p1.r;
+		
+		return removed;
+		
+		//TODO insertar las entradas borradas de nuevo a la altura dada
 		
 		
 		
 	}
 
 	@Override
-	public RectangleContainer insertInHeight(Pair r, int height) {
-		// TODO Auto-generated method stub
-		return null;
+	public RectangleContainer insertInHeight(Pair pair,
+			HashMap<Integer, Integer> dict, int target, int current, LinkedList<Pair> toReinsert) throws IOException {
+		Pair p1;
+		if(this.keyNumber>=maxChildNumber){
+			if(dict.get((Integer)current)==null && !this.isRoot){
+				dict.put((Integer)current, (Integer)1);
+				toReinsert = reinsert(pair,dict);
+			}
+			return this.split(pair.r);
+		}
+		
+		rects.add(pair.r);
+		this.addKey();
+		p1 = getNewMBR();
+		this.parentMBR = p1.r;
+		/* TODO guardar nodo */
+
+		return new RectangleContainer(p1, null, null);
 	}
 
 	
