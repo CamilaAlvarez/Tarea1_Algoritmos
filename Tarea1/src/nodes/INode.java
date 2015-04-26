@@ -10,6 +10,7 @@ import rectangles.IRectangle;
 import rectangles.MyRectangle;
 import trees.RTree;
 import utils.DeletionPasser;
+import utils.MyInteger;
 import utils.Pair;
 import utils.RectangleContainer;
 
@@ -43,7 +44,6 @@ public interface INode{
 	 * @throws IOException
 	 */
 	public RectangleContainer insertInHeight(Pair pair, HashMap<Integer,Integer> dict, int target, int current,
-			LinkedList<Pair> toReinsert, Integer h) throws IOException;
-	LinkedList<Pair> reinsert(Pair r, HashMap<Integer,Integer> dict);
+			LinkedList<Pair> toReinsert, MyInteger h) throws IOException;
 
 }

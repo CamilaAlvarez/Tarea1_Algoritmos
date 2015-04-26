@@ -9,8 +9,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Set;
 
-import Point.Point;
-
 import rectangles.DistanceComparator;
 import rectangles.IRectangle;
 import rectangles.MBR;
@@ -19,8 +17,10 @@ import rectangles.RectangleComparatorX;
 import rectangles.RectangleComparatorY;
 import trees.RTree;
 import utils.DeletionPasser;
+import utils.MyInteger;
 import utils.Pair;
 import utils.RectangleContainer;
+import Point.Point;
 
 /**
  * Clase que representa una hoja
@@ -308,7 +308,7 @@ public class Leaf extends AbstractNode{
 		return s;
 	}
 
-	public LinkedList<Pair> reinsert(Pair r, HashMap<Integer,Integer> dict) {
+	public LinkedList<Pair> reinsert(Pair r) {
 		LinkedList<IRectangle> aux_rects = new LinkedList<IRectangle>(rects);
 		aux_rects.add(r.r);
 		
@@ -336,16 +336,16 @@ public class Leaf extends AbstractNode{
 	@Override
 	public RectangleContainer insertInHeight(Pair pair,
 			HashMap<Integer, Integer> dict, int target, int current, 
-			LinkedList<Pair> toReinsert, Integer h) throws IOException {
+			LinkedList<Pair> toReinsert, MyInteger h) throws IOException {
 		Pair p1;
 		if(this.keyNumber>=maxChildNumber){
-			if(dict.get((Integer)current)==null){// && !this.isRoot){
+			if(dict.get((Integer)current)==null && !this.isRoot){
 				dict.put((Integer)current, (Integer)1);
-				LinkedList<Pair> tr = reinsert(pair,dict);
+				LinkedList<Pair> tr = reinsert(pair);
 				for(Pair p : tr){
 					toReinsert.add(p);
 				}
-				h = new Integer(current);
+				h = new MyInteger(current);
 			}
 			else{
 				return this.split(pair.r);

@@ -10,6 +10,7 @@ import nodes.InternalNode;
 import nodes.Leaf;
 import rectangles.IRectangle;
 import rectangles.MBR;
+import rectangles.MyRectangle;
 
 public class Utils {
 	public static INode loadNode(byte[] data){
@@ -78,6 +79,14 @@ public class Utils {
 		l.writeBuffer(data);
 		l2 = Utils.loadNode(data);
 		System.out.println(l.equals(l2));
+	}
+	
+	public static MBR toMBR(IRectangle r){
+		return new MBR(r.getX(),r.getY());
+	}
+	
+	public static MyRectangle toMyRectangle(IRectangle r){
+		return new MyRectangle(r.getX(),r.getY());
 	}
 
 }

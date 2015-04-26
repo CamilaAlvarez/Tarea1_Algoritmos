@@ -10,8 +10,8 @@ import trees.RTree;
 
 public class GUI{
 	
-	public static void draw(RTree t) throws IOException {
-		JFrame f = new JFrame("Draw");
+	public static void draw(RTree t, String name) throws IOException {
+		JFrame f = new JFrame(name);
 		f.setSize(700, 700);
 		
 		LinkedList<DrawRectangle> r = new LinkedList<DrawRectangle>(); 

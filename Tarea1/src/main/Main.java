@@ -18,7 +18,7 @@ public class Main {
 
 	
 	public static void main(String[] args) throws IOException {
-		testGUIReinsert();
+		testGUIReinsert2();
 	}
 	
 	public static void testDistancia(){
@@ -38,7 +38,7 @@ public class Main {
 	}
 	
 	public static void testInsertar() throws IOException{
-		int t = 10;
+		int t = 15;
 		RTree tree = new RTree(t);
 		int i=1;
 		ArrayList<MyRectangle> rects = RectangleGenerator.generateRandom(1000);
@@ -60,27 +60,45 @@ public class Main {
 			//System.out.println("Se inserta: "+r);
 			//System.out.println("En arbol: "+tree.root);
 			if(i == n-2){
-				GUI.draw(tree);
+				GUI.draw(tree,"antes");
 			}
 		}
 		//System.out.println(tree.root.isLeaf());
-		GUI.draw(tree);
+		GUI.draw(tree,"despues");
 	}
 	
 	public static void testGUIReinsert() throws IOException{
 		RTree tree = new RTree(2);
-		int n = 5;
+		int n = 65;
 		ArrayList<MyRectangle> rects = RectangleGenerator.generateRandom(n);
 		for(int i=0; i<n; i++){
 			MyRectangle r = rects.get(i);
-			tree.insertWithReinsert(r);
 			//System.out.println("Se inserta: "+r);
+			tree.insertWithReinsert(r);
 			//System.out.println("En arbol: "+tree.root);
 			if(i == n-2){
-				GUI.draw(tree);
+				//GUI.draw(tree);
 			}
 		}
 		//System.out.println(tree.root.isLeaf());
-		GUI.draw(tree);
+		GUI.draw(tree,"reinsert");
+	}
+	
+	public static void testGUIReinsert2() throws IOException{
+		RTree tree = new RTree(2);
+		int n = 10;
+		ArrayList<MyRectangle> rects = RectangleGenerator.generateRandom(n);
+		for(int i=0; i<n; i++){
+			MyRectangle r = rects.get(i);		
+			tree.insertWithReinsert(r);			
+		}
+		GUI.draw(tree, "Reinsert");
+		
+		RTree tree2 = new RTree(2);
+		for(int i=0; i<n; i++){
+			MyRectangle r = rects.get(i);		
+			tree2.insertar(r);			
+		}
+		GUI.draw(tree2, "split");
 	}
 }

@@ -14,6 +14,7 @@ import nodes.Leaf;
 import rectangles.IRectangle;
 import rectangles.MBR;
 import rectangles.MyRectangle;
+import utils.MyInteger;
 import utils.Pair;
 import utils.RectangleContainer;
 
@@ -68,23 +69,22 @@ public class RTree implements IRTree {
 		
 		MBR mbr = new MBR(r.getX(), r.getY());
 		Pair pair = new Pair(mbr, -1L); 
-		insertar2(pair, dict, 0);
+		insertar2(pair, dict, -1);
 		
 	}
 	public void insertar2(Pair r, HashMap<Integer, Integer> dict, int target) throws IOException{
 		LinkedList<Pair> toReinsert = new LinkedList<Pair>();
-		Integer h = new Integer(0);
-		RectangleContainer c = root.insertInHeight(r, dict, 1, target, toReinsert, h);
+		MyInteger h = new MyInteger(-1);
+		RectangleContainer c = root.insertInHeight(r, dict, target, 0, toReinsert, h);
 		//Ocurrió un split
 		if (c.p2!=null){
-			System.out.println("split");
 			createNewRoot(c);
+			if(h.getInt()!=-1) h.setInt(h.getInt()+1);
 		}
 		//Ocurrió un reinsert
 		if(!toReinsert.isEmpty()){
-			System.out.println(toReinsert.size());
 			for(Pair p : toReinsert){
-				insertar2(p,dict,h.intValue());
+				insertar2(p,dict,h.getInt());
 			}
 		}
 	}
@@ -103,3 +103,4 @@ public class RTree implements IRTree {
 	}
 
 }
+

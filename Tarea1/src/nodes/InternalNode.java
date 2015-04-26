@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Set;
 
+import rectangles.DistanceComparatorPairs;
 import rectangles.IRectangle;
 import rectangles.MBR;
 import rectangles.MyRectangle;
@@ -19,8 +20,11 @@ import rectangles.RectangleComparatorX;
 import rectangles.RectangleComparatorY;
 import trees.RTree;
 import utils.DeletionPasser;
+import utils.MyInteger;
 import utils.Pair;
 import utils.RectangleContainer;
+import utils.Utils;
+import Point.Point;
 
 /**
  * Clase que representa nodo interno
@@ -91,7 +95,10 @@ public class InternalNode extends AbstractNode{
 			keyNumber--;
 			
 			if(keyNumber+2>maxChildNumber){
-				return this.split(aux.p1, aux.p2,t);
+				LinkedList<Pair> pairs = new LinkedList<Pair>();
+				pairs.add(aux.p1);
+				pairs.add(aux.p2);
+				return this.split(pairs);
 				
 			}
 			
@@ -127,18 +134,18 @@ public class InternalNode extends AbstractNode{
 	}
 
 	/**
-	 * MÃ©todo encargado de hacer split de un nodo
+	 * Método encargado de hacer split de un nodo al hacer reinsert
 	 * @param p1 par a agregar
-	 * @param p2 par a agregar
 	 * @param t arbol al que pertenece el nodo
 	 * @return RectangleContainer con el rectangulo que debe subir, y
 	 * la posicion del hijo que se debe guardar
 	 * @throws IOException 
 	 */
-	private RectangleContainer split(Pair p1, Pair p2, RTree t) throws IOException {
+	private RectangleContainer split(LinkedList<Pair> pairs) throws IOException {
 		LinkedList<Pair> aux_list = new LinkedList<Pair>(mbrList);
-		aux_list.add(p1);
-		aux_list.add(p2);
+		for(Pair p : pairs){
+			aux_list.add(p);			
+		}
 		LinkedList<Pair> children = generateSplit(aux_list);
 		return generalSplit(children); 
 		
@@ -533,18 +540,117 @@ public class InternalNode extends AbstractNode{
 		
 	}
 
-	@Override
-	public LinkedList<Pair> reinsert(Pair r, HashMap<Integer, Integer> dict) {
-		// TODO Auto-generated method stub
-		return null;
+	public LinkedList<Pair> reinsert(LinkedList<Pair> pairs) {
+		LinkedList<Pair> aux_rects = new LinkedList<Pair>(mbrList);
+		for(Pair pair: pairs){
+			aux_rects.add(pair);
+		}
+		
+		Point p = this.parentMBR.getCenter();
+		DistanceComparatorPairs comp = new DistanceComparatorPairs(p);
+		Collections.sort(aux_rects, comp);
+		long cant = RTree.p;
+		
+		LinkedList<Pair> removed = new LinkedList<Pair>();
+		
+		for(int i = 0; i<cant; i++){
+			Pair rect = aux_rects.remove();
+			removed.add(rect);
+		}
+		
+		this.mbrList = aux_rects;
+		Pair pair = this.getNewMBR();
+		this.parentMBR=pair.r;
+		
+		return removed;
+	}
+	
+	public RectangleContainer overflowTreatment(int current, HashMap<Integer, Integer> dict,
+			LinkedList<Pair> toReinsert, LinkedList<Pair> pairs, MyInteger h) throws IOException{
+		if(dict.get((Integer)current)==null && !this.isRoot){
+			dict.put((Integer)current, (Integer)1);
+			LinkedList<Pair> tr = reinsert(pairs);
+			for(Pair p : tr){
+				toReinsert.add(p);
+			}
+			h.setInt(current);
+		}
+		else{
+			return this.split(pairs);
+		}
+		Pair p1 = getNewMBR();
+		this.parentMBR = p1.r;
+		/* TODO guardar nodo */
+
+		return new RectangleContainer(p1, null, null);
 	}
 
 	@Override
 	public RectangleContainer insertInHeight(Pair pair,
 			HashMap<Integer, Integer> dict, int target, int current,
-			LinkedList<Pair> toReinsert, Integer h) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+			LinkedList<Pair> toReinsert, MyInteger h) throws IOException {
+		
+		if(target!=current){//Insertar mas abajo
+			MyRectangle r = Utils.toMyRectangle(pair.r);
+			INode insertPlace = this.obtainInsertNode(r);
+			RectangleContainer aux = insertPlace.insertInHeight(pair, dict, target, current+1, toReinsert, h);
+			if(aux.p2==null){
+				Pair p1 = aux.p1;
+				for(Pair p : mbrList)
+					if(p.childPos==p1.childPos){
+						p.r = p1.r;
+						break;
+					}
+				
+				Pair p_aux = getNewMBR();
+				this.parentMBR = p_aux.r;
+				/* TODO guardar nodo */
+				return new RectangleContainer(p_aux, null, null);
+			}
+			
+			else{
+				for(Pair p : mbrList)
+					if(p.r.equals(aux.r)){
+						mbrList.remove(p);
+						break;
+					}
+				
+				/* se deberia borrar el hijo correpondiente a aux.r del archivo */
+				keyNumber--;
+				
+				if(keyNumber+2>maxChildNumber){
+					LinkedList<Pair> pairs = new LinkedList<Pair>();
+					pairs.add(aux.p1);
+					pairs.add(aux.p2);
+					return overflowTreatment(current, dict, toReinsert, pairs, h);
+				}
+				
+				/* se guardan los dos mbr nuevos */
+				mbrList.add(aux.p1);
+				mbrList.add(aux.p2);
+				keyNumber+=2;
+				Pair p_aux = getNewMBR();
+				this.parentMBR = p_aux.r;
+				/* TODO guardar nodo */
+				return new RectangleContainer(p_aux, null, null);
+			}
+		}
+		else{//Insertar en este nivel
+			System.out.println(current);
+			if(this.keyNumber>=maxChildNumber){
+				System.out.println("inside");
+				LinkedList<Pair> pairs = new LinkedList<Pair>();
+				pairs.add(pair);
+				return overflowTreatment(current, dict, toReinsert, pairs, h);
+			}
+			System.out.println("outside");
+			mbrList.add(pair);
+			this.addKey();
+			Pair p1 = getNewMBR();
+			this.parentMBR = p1.r;
+			/* TODO guardar nodo */			
+			return new RectangleContainer(p1, null, null);
+		}
 	}
 
 	
