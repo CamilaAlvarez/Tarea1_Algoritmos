@@ -162,9 +162,12 @@ public abstract class AbstractNode implements INode{
 		ByteBuffer.wrap(data, pos, 8).putLong(filePos);
 		pos += 8;
 		
-		pos = parentMBR.writeBuffer(data, pos);		
+		pos = parentMBR.writeBuffer(data, pos);	
+		pos = this.writeBuffer(data,pos);
 		
 	}
+	
+	protected abstract int writeBuffer(byte[] data,int pos);
 	
 	@Override
 	public boolean equals(Object obj) {

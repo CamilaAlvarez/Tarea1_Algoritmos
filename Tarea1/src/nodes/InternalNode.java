@@ -3,6 +3,7 @@ package nodes;
 import gui.DrawRectangle;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -651,6 +652,19 @@ public class InternalNode extends AbstractNode{
 			/* TODO guardar nodo */			
 			return new RectangleContainer(p1, null, null);
 		}
+	}
+
+	@Override
+	protected int writeBuffer(byte[] data, int p){
+		int pos = p;
+		for(int i=0; i<this.keyNumber; i++){
+			Pair pair = mbrList.get(i);
+			pos = pair.r.writeBuffer(data, pos);
+			ByteBuffer.wrap(data, pos, 8).putLong(pair.childPos);
+			pos += 8;
+		}	
+		return pos;
+		
 	}
 
 	

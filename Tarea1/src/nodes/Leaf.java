@@ -269,8 +269,22 @@ public class Leaf extends AbstractNode{
 
 	@Override
 	public boolean eq(Object o) {
-		// TODO Auto-generated method stub
-		return true;
+		if(o instanceof Leaf){
+			Leaf l = (Leaf)o;
+			if(this.rects.size()==l.rects.size()){
+				boolean r = true;
+				for(int i=0; i<this.rects.size();i++){
+					IRectangle r1 = rects.get(i);
+					IRectangle r2 = l.rects.get(i);
+					r = r && (r1.equals(r2));
+				}
+				return r;
+			}
+			else{
+				return false;
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -360,6 +374,16 @@ public class Leaf extends AbstractNode{
 		/* TODO guardar nodo */
 
 		return new RectangleContainer(p1, null, null);
+	}
+
+	@Override
+	protected int writeBuffer(byte[] data, int p) {
+		int pos = p;
+		for(int i=0; i<this.keyNumber; i++){
+			IRectangle r = rects.get(i);
+			pos = r.writeBuffer(data, pos);
+		}	
+		return pos;
 	}
 
 	
