@@ -59,7 +59,8 @@ public class Leaf extends AbstractNode{
 			this.addKey();
 			p1 = getNewMBR();
 			this.parentMBR = p1.r;
-			/* TODO guardar nodo */
+			/* TODO aqui guarde nodo */
+			RTree.memManager.saveNode(this);
 		}
 		return new RectangleContainer(p1, null, null);
 		
@@ -371,8 +372,8 @@ public class Leaf extends AbstractNode{
 		}
 		p1 = getNewMBR();
 		this.parentMBR = p1.r;
-		/* TODO guardar nodo */
-
+		/* TODO aqui guarde nodo */
+		RTree.memManager.saveNode(this);
 		return new RectangleContainer(p1, null, null);
 	}
 

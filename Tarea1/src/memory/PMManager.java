@@ -36,4 +36,11 @@ public class PMManager implements IMemoryManager{
 		return nodes.size();
 	}
 
+
+	@Override
+	public int getVisitados() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

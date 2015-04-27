@@ -25,4 +25,6 @@ public interface IMemoryManager {
 	 * @return
 	 */
 	public long getNewPosition();
+	
+	public int getVisitados();
 }

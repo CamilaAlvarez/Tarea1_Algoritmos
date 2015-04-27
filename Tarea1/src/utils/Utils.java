@@ -95,6 +95,7 @@ public class Utils {
 			
 			MBR r = new MBR(x, y);
 			long filePos = ByteBuffer.wrap(data, pos, 8).getLong();
+			pos += 8;
 			
 			Pair pair = new Pair(r, filePos);
 			pairs.add(pair);

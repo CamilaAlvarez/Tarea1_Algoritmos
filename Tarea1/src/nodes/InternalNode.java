@@ -81,7 +81,8 @@ public class InternalNode extends AbstractNode{
 			
 			Pair p_aux = getNewMBR();
 			this.parentMBR = p_aux.r;
-			/* TODO guardar nodo */
+			
+			RTree.memManager.saveNode(this);
 			return new RectangleContainer(p_aux, null, null);
 		}
 		
@@ -109,7 +110,7 @@ public class InternalNode extends AbstractNode{
 			keyNumber+=2;
 			Pair p_aux = getNewMBR();
 			this.parentMBR = p_aux.r;
-			/* TODO guardar nodo */
+			RTree.memManager.saveNode(this);
 			return new RectangleContainer(p_aux, null, null);
 		}
 	}
@@ -474,8 +475,22 @@ public class InternalNode extends AbstractNode{
 
 	@Override
 	public boolean eq(Object o) {
-		// TODO Auto-generated method stub
-		return true;
+		if(o instanceof InternalNode){
+			InternalNode l = (InternalNode)o;
+			if(this.mbrList.size()==l.mbrList.size()){
+				boolean r = true;
+				for(int i=0; i<this.mbrList.size();i++){
+					Pair r1 = mbrList.get(i);
+					Pair r2 = l.mbrList.get(i);
+					r = r && (r1.equals(r2));
+				}
+				return r;
+			}
+			else{
+				return false;
+			}
+		}
+		return false;
 	}
 
 	/* Altura desde raiz(h=0) a hojas, esto por simplicidad */
@@ -541,7 +556,7 @@ public class InternalNode extends AbstractNode{
 		
 	}
 
-	public LinkedList<Pair> reinsert(LinkedList<Pair> pairs) {
+	public LinkedList<Pair> reinsert(LinkedList<Pair> pairs) throws IOException {
 		LinkedList<Pair> aux_rects = new LinkedList<Pair>(mbrList);
 		for(Pair pair: pairs){
 			aux_rects.add(pair);
@@ -562,6 +577,7 @@ public class InternalNode extends AbstractNode{
 		this.mbrList = aux_rects;
 		Pair pair = this.getNewMBR();
 		this.parentMBR=pair.r;
+		RTree.memManager.saveNode(this); 
 		
 		return removed;
 	}
@@ -581,7 +597,8 @@ public class InternalNode extends AbstractNode{
 		}
 		Pair p1 = getNewMBR();
 		this.parentMBR = p1.r;
-		/* TODO guardar nodo */
+		/* TODO aqui acabo de guardar nodo*/
+		RTree.memManager.saveNode(this);
 
 		return new RectangleContainer(p1, null, null);
 	}
@@ -605,7 +622,8 @@ public class InternalNode extends AbstractNode{
 				
 				Pair p_aux = getNewMBR();
 				this.parentMBR = p_aux.r;
-				/* TODO guardar nodo */
+				/* TODO aqui guarde nodo */
+				RTree.memManager.saveNode(this);
 				return new RectangleContainer(p_aux, null, null);
 			}
 			
@@ -632,7 +650,8 @@ public class InternalNode extends AbstractNode{
 				keyNumber+=2;
 				Pair p_aux = getNewMBR();
 				this.parentMBR = p_aux.r;
-				/* TODO guardar nodo */
+				/* TODO aqui guarde nodo */
+				RTree.memManager.saveNode(this);
 				return new RectangleContainer(p_aux, null, null);
 			}
 		}
@@ -649,7 +668,8 @@ public class InternalNode extends AbstractNode{
 			this.addKey();
 			Pair p1 = getNewMBR();
 			this.parentMBR = p1.r;
-			/* TODO guardar nodo */			
+			/* TODO aqui guarde nodo */
+			RTree.memManager.saveNode(this);
 			return new RectangleContainer(p1, null, null);
 		}
 	}

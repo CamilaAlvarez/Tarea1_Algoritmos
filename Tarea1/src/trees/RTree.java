@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import memory.IMemoryManager;
-import memory.PMManager;
 import nodes.INode;
 import nodes.InternalNode;
 import nodes.Leaf;
@@ -24,15 +23,14 @@ public class RTree implements IRTree {
 	public static IMemoryManager memManager;	
 	public INode root;
 	
-	public RTree(int t) throws IOException{
+	public RTree(int t, IMemoryManager mem) throws IOException{
 		// true indica que se es raiz
 		RTree.t= t;
 		RTree.p = Math.round(2*t*0.3);
 		double[] x = {0,0};
 		double[] y = {0,0};
-
-		root = new Leaf(0, true, new MBR(x, y), 0, new LinkedList<IRectangle>());
-		RTree.memManager = new PMManager();
+		RTree.memManager = mem;
+		root = new Leaf(0, true, new MBR(x, y), mem.getNewPosition(), new LinkedList<IRectangle>());
 		memManager.saveNode(root);
 	}
 
@@ -46,7 +44,6 @@ public class RTree implements IRTree {
 		if (c.p2!=null){
 			createNewRoot(c);
 		}
-		
 	}
 	
 	@Override

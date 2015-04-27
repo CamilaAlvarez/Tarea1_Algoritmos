@@ -16,6 +16,9 @@ public class Buffer {
 		this.priority = new PriorityList(bufferSize);
 		this.modify = new boolean[bufferSize];
 		this.dirBuffer = new long[bufferSize];
+		for(int i=0; i<bufferSize;i++){
+			dirBuffer[i]=-1L;
+		}
 		this.bufferSize = bufferSize;
 		this.used = 0;
 	}

@@ -11,4 +11,18 @@ public class Pair {
 		this.childPos = childPos;
 	}
 	
+	@Override
+	public boolean equals(Object r){
+		if (!(r instanceof Pair))
+            return false;
+		
+		Pair rect = (Pair)r;
+		boolean res = true;
+		res = res & rect.r.equals(this.r);
+		res = res & rect.childPos==this.childPos;
+		return res;
+	}
+	
 }
+
+

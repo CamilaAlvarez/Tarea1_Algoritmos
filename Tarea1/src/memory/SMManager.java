@@ -45,7 +45,7 @@ public class SMManager implements IMemoryManager{
 			}
 		}
 		//se lee del disco el nodo buscado
-		readFromFile(data, nodeBuffer.getFilePosition(toFree));
+		readFromFile(data, pos);
 		n = Utils.loadNode(data);
 		//el nodo se agrega al buffer
 		nodeBuffer.addNode(n,toFree,false);
