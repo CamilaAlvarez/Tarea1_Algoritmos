@@ -8,25 +8,27 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 
+import point.Point;
+
 import memory.IMemoryManager;
 import memory.PMManager;
 import memory.SMManager;
 import nodes.INode;
 import nodes.InternalNode;
 import rectangles.DistanceComparator;
+import rectangles.IRectangle;
 import rectangles.MBR;
 import rectangles.MyRectangle;
 import trees.RTree;
 import utils.Pair;
-import Point.Point;
 
 public class Main {
 
 	
 	public static void main(String[] args) throws IOException {
-		testSecondaryMem2();
+		testBuscar();
 	}
-	
+		
 	public static void testDistancia(){
 		Point c = new Point(0, 0);
 		LinkedList<MyRectangle> r = new LinkedList<MyRectangle>();
@@ -152,11 +154,46 @@ public class Main {
 		RTree treeSM = new RTree(2, new PMManager());
 		for(int i=0; i<n; i++){
 			MyRectangle r = rects.get(i);		
-			treeSM.insertWithReinsert(r);			
+			treeSM.insertWithReinsert(r);
 		}
 		GUI.draw(treeSM, "Principal");
 		
+	}	
+	
+	public static void testMasiveInsert() throws IOException{
+		//TODO
 	}
 	
+	public static void testBuscar() throws IOException{
+		LinkedList<MyRectangle> rects = new LinkedList<MyRectangle>();
+		int n = 9;
+		for(int i = 0; i<n;i++){
+			double[] x1 = {i*50 ,i*50+30};
+			double[] y1 = {i*50 ,i*50+30};
+			rects.add(new MyRectangle(x1, y1));			
+		}
+		
+		int buffSize = 5;
+		IMemoryManager memManager = new SMManager(4096, buffSize);		
+		RTree tree = new RTree(2, memManager);
+		
+		for(int i=0; i<n-1; i++){
+			MyRectangle r = rects.get(i);		
+			tree.insertar(r);
+		}
+		MyRectangle r = rects.get(n-1);
+		GUI.draw(tree, "Tree");
+		tree.insertar(r);
+		GUI.draw(tree, "Tree");
+		
+		double[] x = {25, 40};
+		double[] y = {25, 40};
+		MyRectangle search = new MyRectangle(x, y);
+		
+		LinkedList<IRectangle> ans = tree.buscar(search);
+		for(IRectangle a : ans){
+			System.out.println(a);
+		}
+	}
 	
 }

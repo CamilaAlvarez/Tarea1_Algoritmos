@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Set;
 
+import point.Point;
+
 import rectangles.DistanceComparator;
 import rectangles.IRectangle;
 import rectangles.MBR;
@@ -20,7 +22,6 @@ import utils.DeletionPasser;
 import utils.MyInteger;
 import utils.Pair;
 import utils.RectangleContainer;
-import Point.Point;
 
 /**
  * Clase que representa una hoja

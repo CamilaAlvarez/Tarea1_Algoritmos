@@ -2,8 +2,9 @@ package rectangles;
 
 import java.util.Comparator;
 
+import point.Point;
+
 import utils.Pair;
-import Point.Point;
 
 /**
  * Ordena de mayor a menor

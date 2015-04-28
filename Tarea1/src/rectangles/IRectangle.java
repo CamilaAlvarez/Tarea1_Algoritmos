@@ -1,6 +1,6 @@
 package rectangles;
 
-import Point.Point;
+import point.Point;
 
 public interface IRectangle {
 
@@ -17,6 +17,8 @@ public interface IRectangle {
 	int writeBuffer(byte[] data, int pos);
 	
 	Point getCenter();
+	
+	boolean intersects(IRectangle r);
 
 
 }

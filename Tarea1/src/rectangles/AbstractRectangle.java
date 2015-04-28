@@ -2,7 +2,8 @@ package rectangles;
 
 import java.nio.ByteBuffer;
 
-import Point.Point;
+import point.Point;
+
 
 public abstract class AbstractRectangle implements IRectangle{
 	protected double[] x_coords;
@@ -45,6 +46,9 @@ public abstract class AbstractRectangle implements IRectangle{
 	 */
 	@Override
 	public double intersectionArea(IRectangle r){
+		if(!this.intersects(r)){
+			return 0;
+		}
 		double[] r_x = r.getX();
 		double[] r_y = r.getY();
 		double[] aux_x = this.x_coords;
@@ -94,5 +98,23 @@ public abstract class AbstractRectangle implements IRectangle{
 		double x = (this.x_coords[0]+this.x_coords[1])/2;
 		double y = (this.y_coords[0]+this.y_coords[1])/2;
 		return new Point(x,y);
+	}
+	
+	@Override
+	public boolean intersects(IRectangle r){
+		double x0 = this.x_coords[0];
+		double x1 = this.x_coords[1];
+		double y0 = this.y_coords[0];
+		double y1 = this.y_coords[1];
+		
+		double x0p = r.getX()[0];
+		double x1p = r.getX()[1];
+		double y0p = r.getY()[0];
+		double y1p = r.getY()[1];
+		
+		if(x0p>=x1 || x1p<=x0 || y0p>=y1 || y1p<=y0){
+			return false;	
+		}
+		return true;
 	}
 }

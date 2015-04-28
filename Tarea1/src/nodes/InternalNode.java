@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Set;
 
+import point.Point;
+
 import rectangles.DistanceComparatorPairs;
 import rectangles.IRectangle;
 import rectangles.MBR;
@@ -25,7 +27,6 @@ import utils.MyInteger;
 import utils.Pair;
 import utils.RectangleContainer;
 import utils.Utils;
-import Point.Point;
 
 /**
  * Clase que representa nodo interno
@@ -375,7 +376,8 @@ public class InternalNode extends AbstractNode{
 			if(j==i)
 				continue;
 			other = mbrList.get(j).r;
-			overlap += me.intersectionArea(other);
+			double o = me.intersectionArea(other);
+			overlap = overlap + o;
 		}
 		double[] r_x = r.getX();
 		double[] r_y = r.getY();
