@@ -7,14 +7,14 @@ import rectangles.MyRectangle;
 public class RectangleGenerator {
 	
 	public static ArrayList<MyRectangle> generateRandom(int quantity){
-		int size = 700;
+		int size = 100000;
 		
 		ArrayList<MyRectangle> rects = new ArrayList<MyRectangle>();
 		for(int i=0; i<quantity; i++){
 			double[] x = new double[2];
 			double[] y = new double[2];
 			double area = Double.MAX_VALUE;
-			while(area>3000 || area<2000){
+			while(!(area>=1 && area<=100)){
 				double xa=Math.random()*size;
 				double xb=Math.random()*size;
 				double ya=Math.random()*size;

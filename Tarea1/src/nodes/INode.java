@@ -9,7 +9,6 @@ import java.util.LinkedList;
 import rectangles.IRectangle;
 import rectangles.MyRectangle;
 import trees.RTree;
-import utils.DeletionPasser;
 import utils.MyInteger;
 import utils.Pair;
 import utils.RectangleContainer;
@@ -29,11 +28,10 @@ public interface INode{
 	public void writeBuffer(byte[] data);
 	public long getPosition();
 	public void setFilePosition(long position);
-	public DeletionPasser borrar(IRectangle r, int height, INode root) throws IOException;
 	public Pair getNewMBR();
 	public void draw(LinkedList<DrawRectangle> r, int profundidad) throws IOException;
 	/**
-	 * Inserta un rectángulo (o mbr) con restricción de altura
+	 * Inserta un rectï¿½ngulo (o mbr) con restricciï¿½n de altura
 	 * @param pair objeto a insertar
 	 * @param dict diccionario para determinar si se usa reinsert o split
 	 * @param target altura ojetivo en donde insertar

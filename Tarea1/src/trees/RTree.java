@@ -51,10 +51,6 @@ public class RTree implements IRTree {
 		return root.buscar(r);
 		
 	}
-	
-	public void borrar(MyRectangle r) throws IOException{
-		root.borrar(r, 0, root);
-	}
 
 	public void draw(LinkedList<DrawRectangle> r) throws IOException {
 		root.draw(r,1);
@@ -73,12 +69,12 @@ public class RTree implements IRTree {
 		LinkedList<Pair> toReinsert = new LinkedList<Pair>();
 		MyInteger h = new MyInteger(-1);
 		RectangleContainer c = root.insertInHeight(r, dict, target, 0, toReinsert, h);
-		//Ocurrió un split
+		//Ocurriï¿½ un split
 		if (c.p2!=null){
 			createNewRoot(c);
 			if(h.getInt()!=-1) h.setInt(h.getInt()+1);
 		}
-		//Ocurrió un reinsert
+		//Ocurriï¿½ un reinsert
 		if(!toReinsert.isEmpty()){
 			for(Pair p : toReinsert){
 				insertar2(p,dict,h.getInt());

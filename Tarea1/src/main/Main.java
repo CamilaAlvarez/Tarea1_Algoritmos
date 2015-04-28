@@ -26,7 +26,7 @@ public class Main {
 
 	
 	public static void main(String[] args) throws IOException {
-		testBuscar();
+		testMasiveInsert();
 	}
 		
 	public static void testDistancia(){
@@ -51,11 +51,11 @@ public class Main {
 		int i=1;
 		ArrayList<MyRectangle> rects = RectangleGenerator.generateRandom(1000);
 		for(MyRectangle r : rects){
-			System.out.println("insertando n°: "+i);
+			System.out.println("insertando nï¿½: "+i);
 			tree.insertar(r);
 			i++;
 		}
-		System.out.println("Terminé!");
+		System.out.println("Terminï¿½!");
 	}
 	
 	public static void testGUI1() throws IOException{
@@ -161,7 +161,20 @@ public class Main {
 	}	
 	
 	public static void testMasiveInsert() throws IOException{
-		//TODO
+		int buffSize = 21;
+		IMemoryManager memManager = new SMManager(4096, buffSize);
+		
+		RTree treePM = new RTree(20, memManager);
+		int n = 300;
+		ArrayList<MyRectangle> rects = RectangleGenerator.generateRandom(n);
+		long t1 = System.currentTimeMillis();
+		for(int i=0; i<n; i++){
+			MyRectangle r = rects.get(i);		
+			treePM.insertWithReinsert(r);			
+		}
+		long t2 = System.currentTimeMillis();
+		System.out.println(t2-t1);
+		
 	}
 	
 	public static void testBuscar() throws IOException{
@@ -186,8 +199,8 @@ public class Main {
 		tree.insertar(r);
 		GUI.draw(tree, "Tree");
 		
-		double[] x = {25, 40};
-		double[] y = {25, 40};
+		double[] x = {25, 75};
+		double[] y = {25, 75};
 		MyRectangle search = new MyRectangle(x, y);
 		
 		LinkedList<IRectangle> ans = tree.buscar(search);

@@ -22,7 +22,6 @@ import rectangles.PairComparatorY;
 import rectangles.RectangleComparatorX;
 import rectangles.RectangleComparatorY;
 import trees.RTree;
-import utils.DeletionPasser;
 import utils.MyInteger;
 import utils.Pair;
 import utils.RectangleContainer;
@@ -137,7 +136,7 @@ public class InternalNode extends AbstractNode{
 	}
 
 	/**
-	 * Método encargado de hacer split de un nodo al hacer reinsert
+	 * Mï¿½todo encargado de hacer split de un nodo al hacer reinsert
 	 * @param p1 par a agregar
 	 * @param t arbol al que pertenece el nodo
 	 * @return RectangleContainer con el rectangulo que debe subir, y
@@ -493,50 +492,6 @@ public class InternalNode extends AbstractNode{
 			}
 		}
 		return false;
-	}
-
-	/* Altura desde raiz(h=0) a hojas, esto por simplicidad */
-	@Override
-	public DeletionPasser borrar(IRectangle r, int height, INode root) throws IOException {
-		DeletionPasser d = null;
-		for(Pair p : mbrList){
-			if(p.r.contains(r)){
-				INode n = RTree.memManager.loadNode(p.childPos);
-				d = n.borrar(r, height+1, root);
-				if(d!=null)
-					break;
-			}
-		}
-		
-		if(d!=null){
-			/*que pasa si el anterior no termino con underflow? => no voy
-			 * a entrar al if nunca, y si termino con underflow, el nodo a retirar queda
-			 * arriba*/
-			if(d.needToRemove){
-				for(Pair p : mbrList)
-					if(p.childPos==d.deletedNodes.peekFirst().myPos){
-						mbrList.remove(p);
-						break;
-					}
-				d.newMBRPair=null;
-				d.needToRemove=false;
-				return this.condensar(d,height);
-			}
-			
-			/*Actualizar MBR */
-			for(Pair p : mbrList)
-				if(p.childPos==d.newMBRPair.childPos){
-					p.r=d.newMBRPair.r;
-					break;
-				}
-			Pair p = this.getNewMBR();
-			d.setMBRPair(p);
-			return d;
-		
-			
-		}
-		
-		return null;
 	}
 
 	@Override

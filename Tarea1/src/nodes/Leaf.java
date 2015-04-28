@@ -18,7 +18,6 @@ import rectangles.MyRectangle;
 import rectangles.RectangleComparatorX;
 import rectangles.RectangleComparatorY;
 import trees.RTree;
-import utils.DeletionPasser;
 import utils.MyInteger;
 import utils.Pair;
 import utils.RectangleContainer;
@@ -263,8 +262,8 @@ public class Leaf extends AbstractNode{
 	public LinkedList<IRectangle> buscar(MyRectangle r) {
 		LinkedList<IRectangle> res = new LinkedList<IRectangle>();
 		for(IRectangle rect : rects){
-			if(rect.intersectionArea(r)!=0)
-				res.add(r);
+			if(rect.intersects(r))
+				res.add(rect);
 		}
 		return res;
 	}
@@ -287,16 +286,6 @@ public class Leaf extends AbstractNode{
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public DeletionPasser borrar(IRectangle r, int height, INode root) throws IOException {
-		if(rects.contains(r)){ /* TODO ver si funciona */
-			rects.remove(r);
-			DeletionPasser d = new DeletionPasser();
-			return this.condensar(d, height);
-		}
-		return null;
 	}
 
 	@Override
