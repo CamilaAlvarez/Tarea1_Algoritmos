@@ -49,7 +49,7 @@ public class Main {
 		int t = 15;
 		RTree tree = new RTree(t, new PMManager());
 		int i=1;
-		ArrayList<MyRectangle> rects = RectangleGenerator.generateRandom(1000);
+		ArrayList<MyRectangle> rects = RectangleGenerator.generateRandom(1000,700);
 		for(MyRectangle r : rects){
 			System.out.println("insertando n�: "+i);
 			tree.insertar(r);
@@ -59,26 +59,21 @@ public class Main {
 	}
 	
 	public static void testGUI1() throws IOException{
-		RTree tree = new RTree(2,new PMManager());
-		int n = 10;
-		ArrayList<MyRectangle> rects = RectangleGenerator.generateRandom(n);
+		RTree tree = new RTree(3,new PMManager());
+		int n = 30;
+		ArrayList<MyRectangle> rects = RectangleGenerator.generateRandom(n,700);
 		for(int i=0; i<n; i++){
 			MyRectangle r = rects.get(i);
 			tree.insertar(r);
-			//System.out.println("Se inserta: "+r);
-			//System.out.println("En arbol: "+tree.root);
-			if(i == n-2){
-				GUI.draw(tree,"antes");
-			}
 		}
 		//System.out.println(tree.root.isLeaf());
 		GUI.draw(tree,"despues");
 	}
 	
 	public static void testGUIReinsert() throws IOException{
-		RTree tree = new RTree(2,new PMManager());
-		int n = 65;
-		ArrayList<MyRectangle> rects = RectangleGenerator.generateRandom(n);
+		RTree tree = new RTree(3,new PMManager());
+		int n = 15;
+		ArrayList<MyRectangle> rects = RectangleGenerator.generateRandom(n,700);
 		for(int i=0; i<n; i++){
 			MyRectangle r = rects.get(i);
 			//System.out.println("Se inserta: "+r);
@@ -95,7 +90,7 @@ public class Main {
 	public static void testGUIReinsert2() throws IOException{
 		RTree tree = new RTree(2,new PMManager());
 		int n = 10;
-		ArrayList<MyRectangle> rects = RectangleGenerator.generateRandom(n);
+		ArrayList<MyRectangle> rects = RectangleGenerator.generateRandom(n,700);
 		for(int i=0; i<n; i++){
 			MyRectangle r = rects.get(i);		
 			tree.insertWithReinsert(r);			
@@ -144,7 +139,7 @@ public class Main {
 		
 		RTree treePM = new RTree(2, memManager);
 		int n = 10;
-		ArrayList<MyRectangle> rects = RectangleGenerator.generateRandom(n);
+		ArrayList<MyRectangle> rects = RectangleGenerator.generateRandom(n,700);
 		for(int i=0; i<n; i++){
 			MyRectangle r = rects.get(i);		
 			treePM.insertWithReinsert(r);			
@@ -161,16 +156,17 @@ public class Main {
 	}	
 	
 	public static void testMasiveInsert() throws IOException{
-		int buffSize = 21;
+		int buffSize = 10;
 		IMemoryManager memManager = new SMManager(4096, buffSize);
-		
+		System.out.println("se empieza el test");
 		RTree treePM = new RTree(20, memManager);
-		int n = 300;
-		ArrayList<MyRectangle> rects = RectangleGenerator.generateRandom(n);
+		int n = 100;
+		ArrayList<MyRectangle> rects = RectangleGenerator.generateRandom(n,100000);
 		long t1 = System.currentTimeMillis();
 		for(int i=0; i<n; i++){
+			System.out.println(i+"");
 			MyRectangle r = rects.get(i);		
-			treePM.insertWithReinsert(r);			
+			treePM.insertar(r);			
 		}
 		long t2 = System.currentTimeMillis();
 		System.out.println(t2-t1);

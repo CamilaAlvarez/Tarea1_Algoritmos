@@ -331,6 +331,7 @@ public class Leaf extends AbstractNode{
 		}
 		
 		this.rects = aux_rects;
+		this.keyNumber=rects.size();
 		Pair p1 = this.getNewMBR();
 		this.parentMBR=p1.r;
 		

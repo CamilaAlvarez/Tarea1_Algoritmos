@@ -6,15 +6,15 @@ import rectangles.MyRectangle;
 
 public class RectangleGenerator {
 	
-	public static ArrayList<MyRectangle> generateRandom(int quantity){
-		int size = 100000;
+	public static ArrayList<MyRectangle> generateRandom(int quantity, int s){
+		int size = s;
 		
 		ArrayList<MyRectangle> rects = new ArrayList<MyRectangle>();
 		for(int i=0; i<quantity; i++){
 			double[] x = new double[2];
 			double[] y = new double[2];
 			double area = Double.MAX_VALUE;
-			while(!(area>=1 && area<=100)){
+			while(!(area>=300 && area<=500)){
 				double xa=Math.random()*size;
 				double xb=Math.random()*size;
 				double ya=Math.random()*size;

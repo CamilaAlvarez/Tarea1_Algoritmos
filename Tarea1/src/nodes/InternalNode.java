@@ -532,6 +532,7 @@ public class InternalNode extends AbstractNode{
 		}
 		
 		this.mbrList = aux_rects;
+		this.keyNumber=mbrList.size();
 		Pair pair = this.getNewMBR();
 		this.parentMBR=pair.r;
 		RTree.memManager.saveNode(this); 
