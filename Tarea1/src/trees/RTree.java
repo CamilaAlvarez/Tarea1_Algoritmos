@@ -94,6 +94,10 @@ public class RTree implements IRTree {
 		this.root = newRoot;
 		RTree.memManager.saveNode(newRoot);
 	}
+	
+	public int getAccess(){
+		return memManager.getVisitados();
+	}
 
 }
 

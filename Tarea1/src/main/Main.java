@@ -26,7 +26,7 @@ public class Main {
 
 	
 	public static void main(String[] args) throws IOException {
-		testMasiveInsert();
+		finalMainSplit();
 	}
 		
 	public static void testDistancia(){
@@ -203,6 +203,45 @@ public class Main {
 		for(IRectangle a : ans){
 			System.out.println(a);
 		}
+	}
+	
+	public static void testRects2(){
+		ArrayList<MyRectangle> rects = RectangleGenerator.generateRandom2(512, 500000);
+		for(MyRectangle r : rects){
+			System.out.println(r.getArea());
+		}
+	}
+	
+	public static void finalMainSplit() throws IOException{
+		int buffSize = 7;
+		int t = 50;
+		double n = Math.pow(2, 12);
+		
+		IMemoryManager memManager = new SMManager(4096, buffSize);
+		System.out.println("Se empieza el test");
+		RTree tree = new RTree(t, memManager);
+		
+		long t0 = System.currentTimeMillis();
+		ArrayList<MyRectangle> rects = RectangleGenerator.generateRandom2(n,500000);
+		long t1 = System.currentTimeMillis();
+		System.out.println("Tiempo creado de rectángulos: "+(t1-t0));
+		
+		t1 = System.currentTimeMillis();
+		for(int i=0; i<n; i++){
+			MyRectangle r = rects.get(i);		
+			tree.insertar(r);			
+		}
+		long t2 = System.currentTimeMillis();
+		System.out.println("Tiempo inserción: "+(t2-t1));
+		System.out.println("Cantidad de accesos a disco: "+tree.getAccess());
+		System.out.println("Empezando búsqueda");
+		ArrayList<MyRectangle> search = RectangleGenerator.generateRandom2((n/10),500000);
+		long t3 = System.currentTimeMillis();
+		for(MyRectangle mr : search){
+			tree.buscar(mr);
+		}
+		long t4 = System.currentTimeMillis();
+		System.out.println("Tiempo búsqueda: "+(t4-t3));
 	}
 	
 }

@@ -313,7 +313,7 @@ public class Leaf extends AbstractNode{
 		return s;
 	}
 
-	public LinkedList<Pair> reinsert(Pair r) {
+	public LinkedList<Pair> reinsert(Pair r) throws IOException {
 		LinkedList<IRectangle> aux_rects = new LinkedList<IRectangle>(rects);
 		aux_rects.add(r.r);
 		
@@ -334,6 +334,7 @@ public class Leaf extends AbstractNode{
 		this.keyNumber=rects.size();
 		Pair p1 = this.getNewMBR();
 		this.parentMBR=p1.r;
+		RTree.memManager.saveNode(this);
 		
 		return removed;
 		
